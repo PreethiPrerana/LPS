@@ -47,6 +47,8 @@ public class BatchCourse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long batchCourseId;
 
+    private Long batchId;
+
     @ManyToOne
     @JoinColumn(name = "plan_id")
     private LearningPlan learningPlan;
