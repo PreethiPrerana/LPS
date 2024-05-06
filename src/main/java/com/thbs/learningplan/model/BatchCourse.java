@@ -1,39 +1,12 @@
 package com.thbs.learningplan.model;
 
+import java.util.Date;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-// import java.util.Date;
-
-// @Entity
-// @Table(name = "BatchCourse")
-// public class BatchCourse {
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long batchId;
-
-//     @Embedded
-//     private LearningPlanCourseId learningPlanCourseId;
-
-//     /**
-//      * The start date of the module.
-//      */
-//     @Temporal(TemporalType.DATE)
-//     private Date startDate;
-
-//     /**
-//      * The end date of the module.
-//      */
-//     @Temporal(TemporalType.DATE)
-//     private Date endDate;
-//     private String trainer;
-// }
-
-// import jakarta.persistence.*;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -64,6 +37,4 @@ public class BatchCourse {
     private Date endDate;
 
     private String trainer;
-
-    // Constructors, getters, and setters
 }

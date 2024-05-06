@@ -21,5 +21,6 @@ public interface LearningPlanRepository extends JpaRepository<LearningPlan, Long
      */
     List<LearningPlan> findByType(String type);
 
-   
+    List<LearningPlan> findByLearningPlanNameIgnoreCase(String learningPlanName);
+
 }
