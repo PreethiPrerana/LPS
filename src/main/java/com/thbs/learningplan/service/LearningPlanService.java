@@ -11,8 +11,12 @@ import java.util.Optional;
 @Service
 public class LearningPlanService {
 
-    @Autowired
     private LearningPlanRepository learningPlanRepository;
+
+    @Autowired
+    public LearningPlanService(LearningPlanRepository learningPlanRepository) {
+        this.learningPlanRepository = learningPlanRepository;
+    }
 
     // Method to save a learning plan
     public LearningPlan saveLearningPlan(LearningPlan learningPlan) {
@@ -25,8 +29,12 @@ public class LearningPlanService {
     }
 
     // Method to read a learning plan by ID
-    public Optional<LearningPlan> getLearningPlanById(Long learningPlanId) {
-        return learningPlanRepository.findById(learningPlanId);
+    public LearningPlan getLearningPlanById(Long learningPlanId) {
+        Optional<LearningPlan> optionalPlan = learningPlanRepository.findById(learningPlanId);
+        if (optionalPlan.isPresent()) {
+            return optionalPlan.get();
+        }
+        return null;
     }
 
     // Method to read learning plans by type

@@ -56,7 +56,7 @@ public class SheetValidator {
         }
 
         int lastRowNum = sheet.getLastRowNum();
-        if (lastRowNum < 1) {
+        if (lastRowNum < 3) {
             throw new InvalidSheetFormatException("No topics found in the course.");
         }
 
