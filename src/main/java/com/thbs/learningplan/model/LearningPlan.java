@@ -22,7 +22,7 @@ public class LearningPlan {
     private String type;
 
     @ElementCollection
-    @CollectionTable(name = "LearningPlan_Course", joinColumns = @JoinColumn(name = "learning_plan_id"))
-    @AttributeOverride(name = "courseId", column = @Column(name = "course_id"))
+    @CollectionTable(name = "LearningPlan_Course", joinColumns = @JoinColumn(name = "learning_plan_id", insertable = false, updatable = false))
+    @AttributeOverride(name = "courseId", column = @Column(name = "course_id", insertable = false, updatable = false))
     private List<LearningPlanCourseId> learningPlanCourses;
 }
