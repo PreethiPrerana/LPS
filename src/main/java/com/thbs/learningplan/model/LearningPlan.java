@@ -23,6 +23,6 @@ public class LearningPlan {
 
     @ElementCollection
     @CollectionTable(name = "LearningPlan_Course", joinColumns = @JoinColumn(name = "learning_plan_id"))
-    @Column(name = "course_id")
-    private List<Long> courseIds;
+    @AttributeOverride(name = "courseId", column = @Column(name = "course_id"))
+    private List<LearningPlanCourseId> learningPlanCourses;
 }
