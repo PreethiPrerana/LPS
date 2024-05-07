@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/learning-plan")
-// @CrossOrigin("172.18.4.113:5173, 172.18.4.195:5173 ")
+@CrossOrigin("172.18.4.113:5173, 172.18.4.195:5173,172.18.4.190:5173 ")
 public class LearningPlanController {
 
     private LearningPlanService learningPlanService;

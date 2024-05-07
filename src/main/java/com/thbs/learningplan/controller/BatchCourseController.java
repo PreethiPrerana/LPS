@@ -1,5 +1,6 @@
 package com.thbs.learningplan.controller;
 
+import com.thbs.learningplan.dto.BatchCourseDTO;
 import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.service.BatchCourseService;
@@ -37,6 +38,12 @@ public class BatchCourseController {
         return ResponseEntity.ok().body(batchCourses);
     }
 
+    @GetMapping("/batch/{batchId}")
+    public ResponseEntity<BatchCourseDTO> getBatchCourseDTO(@PathVariable Long batchId) {
+        BatchCourseDTO dto = batchCourseService.convertToDTO(batchId);
+        return ResponseEntity.ok().body(dto);
+    }
+
     @PutMapping("/trainer")
     public ResponseEntity<String> updateTrainer(@RequestBody BatchCourseId batchCourseId,
             @RequestParam String trainer) {
@@ -58,5 +65,4 @@ public class BatchCourseController {
         batchCourseService.deleteBatchCourse(batchCourseId);
         return ResponseEntity.ok().body("Deleted Successfully");
     }
-
 }
