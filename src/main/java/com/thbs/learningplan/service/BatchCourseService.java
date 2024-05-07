@@ -33,15 +33,17 @@ public class BatchCourseService {
     private LearningPlanRepository learningPlanRepository;
     private CourseService courseService;
     private CourseRepository courseRepository;
+    private TopicService topicService;
 
     @Autowired
     public BatchCourseService(BatchCourseRepository batchCourseRepository,
             LearningPlanRepository learningPlanRepository, CourseRepository courseRepository,
-            CourseService courseService) {
+            CourseService courseService, TopicService topicService) {
         this.batchCourseRepository = batchCourseRepository;
         this.learningPlanRepository = learningPlanRepository;
         this.courseRepository = courseRepository;
         this.courseService = courseService;
+        this.topicService = topicService;
     }
 
     public BatchCourse addBatchCourse(BatchCourse batchCourse) {
@@ -116,9 +118,16 @@ public class BatchCourseService {
             batchCourseDTO.setEndDate(batchCourse.getEndDate());
             batchCourseDTO.setTrainer(batchCourse.getTrainer());
 
-            CourseDTO courseDTO = fetchCourseDTO(batchCourse.getBatchCourseId().getCourse());
+            // Set courseName and courseId
+            Course course = batchCourse.getBatchCourseId().getCourse();
+            batchCourseDTO.setCourseName(course.getCourseName());
+            batchCourseDTO.setCourseId(course.getCourseId());
 
-            batchCourseDTO.setCourse(courseDTO); // Set the CourseDTO directly
+            List<TopicDTO> topicDTOs = topicService.getTopicsByCourse(course)
+                    .stream()
+                    .map(topic -> new TopicDTO(topic.getTopicId(), topic.getTopicName()))
+                    .collect(Collectors.toList());
+            batchCourseDTO.setTopic(topicDTOs);
 
             batchCourseDTOs.add(batchCourseDTO);
         }
