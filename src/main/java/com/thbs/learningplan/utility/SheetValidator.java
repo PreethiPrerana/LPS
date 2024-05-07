@@ -64,6 +64,9 @@ public class SheetValidator {
         Iterator<Row> rowIterator = sheet.iterator();
         // Skip the header row
         rowIterator.next();
+        rowIterator.next();
+        rowIterator.next();
+
         // Process each subsequent row
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
