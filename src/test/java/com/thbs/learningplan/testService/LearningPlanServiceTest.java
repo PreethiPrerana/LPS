@@ -59,8 +59,29 @@ class LearningPlanServiceTest {
     }
 
     @Test
-    void testSaveLearningPlan_NullType() {
+    void testSaveLearningPlan_InvalidDataException() {
+        learningPlan = new LearningPlan();
+        learningPlan.setLearningPlanId(1L);
         learningPlan.setType(null);
+        learningPlan.setLearningPlanName("Test Learning Plan");
+
+        assertThrows(InvalidDataException.class, () -> {
+            learningPlanService.saveLearningPlan(learningPlan);
+        });
+
+        learningPlan.setType("");
+        assertThrows(InvalidDataException.class, () -> {
+            learningPlanService.saveLearningPlan(learningPlan);
+        });
+
+        learningPlan.setType("Test Type");
+        learningPlan.setLearningPlanName(null);
+
+        assertThrows(InvalidDataException.class, () -> {
+            learningPlanService.saveLearningPlan(learningPlan);
+        });
+
+        learningPlan.setLearningPlanName("");
 
         assertThrows(InvalidDataException.class, () -> {
             learningPlanService.saveLearningPlan(learningPlan);
@@ -68,29 +89,25 @@ class LearningPlanServiceTest {
     }
 
     @Test
-    void testSaveLearningPlan_EmptyType() {
-        learningPlan.setType("");
+    void testSaveLearningPlan_DuplicateEntryException() {
+        // Prepare data
+        LearningPlan learningPlan = new LearningPlan();
+        learningPlan.setLearningPlanName("Summer Bootcamp");
+        learningPlan.setType("Bootcamp");
 
-        assertThrows(InvalidDataException.class, () -> {
+        List<LearningPlan> existingLearningPlans = new ArrayList<>();
+        existingLearningPlans.add(learningPlan); // Simulating existing learning plan with same name
+        when(learningPlanRepository.findByLearningPlanNameIgnoreCase(learningPlan.getLearningPlanName()))
+                .thenReturn(existingLearningPlans);
+
+        // Calling the method and verifying exception
+        assertThrows(DuplicateEntryException.class, () -> {
             learningPlanService.saveLearningPlan(learningPlan);
         });
+
+        // Verifying that save method was not called
+        verify(learningPlanRepository, never()).save(learningPlan);
     }
-
-    // @Test
-    // void testSaveLearningPlan_DuplicateEntryException() {
-    // LearningPlan existingLearningPlan = new LearningPlan();
-    // existingLearningPlan.setBatchId(1L);
-
-    // when(learningPlanRepository.findByBatchId(existingLearningPlan.getBatchId()))
-    // .thenReturn(new ArrayList<>(List.of(existingLearningPlan)));
-
-    // learningPlan.setBatchId(existingLearningPlan.getBatchId());
-
-    // assertThrows(DuplicateEntryException.class,
-    // () -> learningPlanService.saveLearningPlan(learningPlan));
-
-    // verify(learningPlanRepository, never()).save(any());
-    // }
 
     @Test
     void testGetAllLearningPlans() {
@@ -201,13 +218,52 @@ class LearningPlanServiceTest {
         assertThrows(InvalidDataException.class, () -> {
             learningPlanService.getLearningPlansByType(null);
         });
-    }
-
-    @Test
-    void testGetLearningPlansByType_EmptyType() {
         assertThrows(InvalidDataException.class, () -> {
             learningPlanService.getLearningPlansByType("");
         });
+    }
+
+    @Test
+    void testUpdateLearningPlanName_Success() {
+        // Prepare data
+        Long learningPlanId = 1L;
+        String newLearningPlanName = "Updated Name";
+
+        LearningPlan existingLearningPlan = new LearningPlan();
+        existingLearningPlan.setLearningPlanName("Original Name");
+
+        LearningPlan newLearningPlan = new LearningPlan();
+        newLearningPlan.setLearningPlanName(newLearningPlanName);
+
+        when(learningPlanRepository.findById(learningPlanId))
+                .thenReturn(Optional.of(existingLearningPlan));
+        when(learningPlanRepository.save(existingLearningPlan)).thenReturn(newLearningPlan);
+
+        // Calling the method
+        LearningPlan updatedLearningPlan = learningPlanService.updateLearningPlanName(learningPlanId,
+                newLearningPlanName);
+
+        // Verifying
+        assertEquals(newLearningPlanName, updatedLearningPlan.getLearningPlanName());
+        verify(learningPlanRepository, times(1)).save(existingLearningPlan);
+    }
+
+    @Test
+    void testUpdateLearningPlanName_NotFoundException() {
+        // Prepare data
+        Long nonExistingLearningPlanId = 999L;
+        String newLearningPlanName = "Updated Name";
+
+        when(learningPlanRepository.findById(nonExistingLearningPlanId))
+                .thenReturn(Optional.empty());
+
+        // Calling the method and verifying exception
+        assertThrows(NotFoundException.class, () -> {
+            learningPlanService.updateLearningPlanName(nonExistingLearningPlanId, newLearningPlanName);
+        });
+
+        // Verifying that save method was not called
+        verify(learningPlanRepository, never()).save(any());
     }
 
     @Test

@@ -62,7 +62,7 @@ class TopicServiceTest {
     }
 
     @Test
-    void testAddTopicWithValidation_DuplicateTopic() {
+    void testAddTopicWithValidation_DuplicateEntryException() {
         when(topicRepository.existsByTopicNameAndCourse(anyString(), any(Course.class))).thenReturn(true);
         Topic topic = new Topic(1L, "Existing Topic", "Description", new Course());
 
@@ -96,7 +96,7 @@ class TopicServiceTest {
     }
 
     @Test
-    void testAddTopicsWithValidation_DuplicateTopics() {
+    void testAddTopicsWithValidation_DuplicateEntryException() {
         List<Topic> topics = new ArrayList<>();
 
         Topic validTopic1 = new Topic();
@@ -121,92 +121,30 @@ class TopicServiceTest {
     }
 
     @Test
-    void testAddTopicsWithValidation_EmptyTopicName() {
+    void testAddTopicsWithValidation_InvalidDataException() {
         List<Topic> topics = new ArrayList<>();
 
-        Topic validTopic1 = new Topic();
-        validTopic1.setTopicName("");
-        validTopic1.setDescription("Description 1");
+        Topic validTopic = new Topic();
+        validTopic.setTopicName("");
+        validTopic.setDescription("Description 1");
         Course course = new Course();
-        validTopic1.setCourse(course);
+        validTopic.setCourse(course);
 
-        Topic validTopic2 = new Topic();
-        validTopic2.setTopicName("");
-        validTopic2.setDescription("Description 2");
-        Course course2 = new Course();
-        validTopic2.setCourse(course2);
+        topics.add(validTopic);
 
-        topics.add(validTopic1);
-        topics.add(validTopic2);
+        validTopic.setTopicName(null);
 
-        assertThrows(InvalidDataException.class,
-                () -> topicService.addTopicsWithValidation(topics));
-    }
+        topics.add(validTopic);
 
-    @Test
-    void testAddTopicsWithValidation_NullTopicName() {
-        List<Topic> topics = new ArrayList<>();
+        validTopic.setTopicName("Topic 1");
+        validTopic.setDescription("");
 
-        Topic validTopic1 = new Topic();
-        validTopic1.setTopicName(null);
-        validTopic1.setDescription("Description 1");
-        Course course = new Course();
-        validTopic1.setCourse(course);
+        topics.add(validTopic);
 
-        Topic validTopic2 = new Topic();
-        validTopic2.setTopicName(null);
-        validTopic2.setDescription("Description 2");
-        Course course2 = new Course();
-        validTopic2.setCourse(course2);
+        validTopic.setTopicName("Topic 2");
+        validTopic.setDescription(null);
 
-        topics.add(validTopic1);
-        topics.add(validTopic2);
-
-        assertThrows(InvalidDataException.class,
-                () -> topicService.addTopicsWithValidation(topics));
-    }
-
-    @Test
-    void testAddTopicsWithValidation_EmptyDescription() {
-        List<Topic> topics = new ArrayList<>();
-
-        Topic validTopic1 = new Topic();
-        validTopic1.setTopicName("Topic 1");
-        validTopic1.setDescription("");
-        Course course = new Course();
-        validTopic1.setCourse(course);
-
-        Topic validTopic2 = new Topic();
-        validTopic2.setTopicName("Topic 2");
-        validTopic2.setDescription("");
-        Course course2 = new Course();
-        validTopic2.setCourse(course2);
-
-        topics.add(validTopic1);
-        topics.add(validTopic2);
-
-        assertThrows(InvalidDataException.class,
-                () -> topicService.addTopicsWithValidation(topics));
-    }
-
-    @Test
-    void testAddTopicsWithValidation_NullDescription() {
-        List<Topic> topics = new ArrayList<>();
-
-        Topic validTopic1 = new Topic();
-        validTopic1.setTopicName("Topic 1");
-        validTopic1.setDescription(null);
-        Course course = new Course();
-        validTopic1.setCourse(course);
-
-        Topic validTopic2 = new Topic();
-        validTopic2.setTopicName("Topic 2");
-        validTopic2.setDescription(null);
-        Course course2 = new Course();
-        validTopic2.setCourse(course2);
-
-        topics.add(validTopic1);
-        topics.add(validTopic2);
+        topics.add(validTopic);
 
         assertThrows(InvalidDataException.class,
                 () -> topicService.addTopicsWithValidation(topics));
@@ -246,7 +184,7 @@ class TopicServiceTest {
     }
 
     @Test
-    void testGetTopicById_TopicNotFound() {
+    void testGetTopicById_NotFoundException() {
         // Mock data
         Long topicId = 123L;
         Optional<Topic> optionalTopic = Optional.empty();
@@ -297,16 +235,11 @@ class TopicServiceTest {
     }
 
     @Test
-    void testUpdateTopicDescriptionWithValidation_InvalidDescription() {
+    void testUpdateTopicDescriptionWithValidation_InvalidDataException() {
         when(topicRepository.findById(anyLong())).thenReturn(Optional.of(topic));
 
         assertThrows(InvalidDataException.class,
                 () -> topicService.updateTopicDescriptionWithValidation(1L, ""));
-    }
-
-    @Test
-    void testUpdateTopicDescriptionWithValidation_NullDescription() {
-        when(topicRepository.findById(anyLong())).thenReturn(Optional.of(topic));
 
         assertThrows(InvalidDataException.class,
                 () -> topicService.updateTopicDescriptionWithValidation(1L, null));
@@ -332,16 +265,11 @@ class TopicServiceTest {
     }
 
     @Test
-    void testUpdateTopicNameWithValidation_InvalidName() {
+    void testUpdateTopicNameWithValidation_InvalidDataException() {
         when(topicRepository.findById(anyLong())).thenReturn(Optional.of(topic));
 
         assertThrows(InvalidDataException.class,
                 () -> topicService.updateTopicNameWithValidation(1L, ""));
-    }
-
-    @Test
-    void testUpdateTopicNameWithValidation_NullName() {
-        when(topicRepository.findById(anyLong())).thenReturn(Optional.of(topic));
 
         assertThrows(InvalidDataException.class,
                 () -> topicService.updateTopicNameWithValidation(1L, null));
