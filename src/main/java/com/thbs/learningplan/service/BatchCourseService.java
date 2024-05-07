@@ -97,53 +97,45 @@ public class BatchCourseService {
         List<BatchCourse> batchCourses = batchCourseRepository.findByBatchCourseIdBatchId(batchId);
         PlanDTO planDTO = new PlanDTO();
 
-        for (BatchCourse batchCourse : batchCourses) {
-            // Get the LearningPlan ID associated with the BatchCourse
-            Long learningPlanId = batchCourse.getBatchCourseId().getLearningPlan().getLearningPlanId();
+        if (!batchCourses.isEmpty()) {
+            BatchCourse batchCourse = batchCourses.get(0); // Assuming there's only one learning plan per batch course
+            LearningPlan learningPlan = batchCourse.getBatchCourseId().getLearningPlan();
 
-            // Fetch the LearningPlan details using the LearningPlan ID
-            LearningPlan learningPlan = learningPlanRepository.findByLearningPlanId(learningPlanId)
-                    .orElseThrow(() -> new NotFoundException("Learning plan not found with id: " + learningPlanId));
-
-            // Populate the PlanDTO with LearningPlan details
+            // Populate PlanDTO with LearningPlan details
             planDTO.setBatchId(batchId);
-            planDTO.setLearningPlanId(learningPlanId);
+            planDTO.setLearningPlanId(learningPlan.getLearningPlanId());
             planDTO.setLearningPlanName(learningPlan.getLearningPlanName());
             planDTO.setLearningPlanType(learningPlan.getType());
-
-            Long courseId = batchCourse.getBatchCourseId().getCourse().getCourseId();
-
-            List<BatchCourseDTO> batchCourseDTOs=new ArrayList<>();
-            Optional<Course> optionalCourse=courseRepository.findById(courseId);
-            if(optionalCourse.isPresent()){
-                Course course= optionalCourse.get();
-                courseService.convertToDTO(course);
-                BatchCourseDTO batchCourseDTO=new BatchCourseDTO();
-                batchCourseDTO.setCourses(null);
-                planDTO.setBatchCourses(null);
-            }
         }
 
-        // // Fetch the learning plan details associated with the batchCourses
-        // Long learningPlanId = batchCourses.get(0).getLearningPlanId(); // Assuming all batch courses have the same
-        //                                                                // learning plan
-        // LearningPlanDTO learningPlan = learningPlanService.getLearningPlanById(learningPlanId);
+        // Iterate through each BatchCourse and populate BatchCourseDTO
+        List<BatchCourseDTO> batchCourseDTOs = new ArrayList<>();
+        for (BatchCourse batchCourse : batchCourses) {
+            BatchCourseDTO batchCourseDTO = new BatchCourseDTO();
+            batchCourseDTO.setStartDate(batchCourse.getStartDate());
+            batchCourseDTO.setEndDate(batchCourse.getEndDate());
+            batchCourseDTO.setTrainer(batchCourse.getTrainer());
 
-        // // Fetch and convert CourseDTOs for each batch course
-        // List<CourseDTO> courseDTOs = batchCourses.stream()
-        //         .flatMap(batchCourseDTO -> batchCourseDTO.getCourses().stream())
-        //         .map(courseService::convertToDTO)
-        //         .collect(Collectors.toList());
+            // Fetch associated CourseDTO
+            CourseDTO courseDTO = fetchCourseDTO(batchCourse.getBatchCourseId().getCourse());
 
-        // // Create and populate the PlanDTO
-        // PlanDTO planDTO = new PlanDTO();
-        // planDTO.setBatchId(batchId);
-        // planDTO.setLearningPlanId(learningPlanId);
-        // planDTO.setLearningPlanName(learningPlan.getLearningPlanName());
-        // planDTO.setLearningPlanType(learningPlan.getLearningPlanType());
-        // planDTO.setBatchCourses(batchCourses);
+            List<CourseDTO> courseDTOList = new ArrayList<>();
+            courseDTOList.add(courseDTO); // Add the CourseDTO to a list
+
+            batchCourseDTO.setCourses(courseDTOList); // Set the list of CourseDTOs
+
+            batchCourseDTOs.add(batchCourseDTO);
+        }
+
+        // Set BatchCourseDTOs in PlanDTO
+        planDTO.setBatchCourses(batchCourseDTOs);
 
         return planDTO;
+    }
+
+    private CourseDTO fetchCourseDTO(Course course) {
+        // Use CourseService to convert Course entity to CourseDTO
+        return courseService.convertToDTO(course);
     }
 
     public BatchCourse updateTrainer(BatchCourseId batchCourseId, String trainer) {
