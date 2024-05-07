@@ -23,5 +23,5 @@ public class BatchCourseDTO {
 
     private String trainer;
 
-    private List<CourseDTO> courses;
+    private CourseDTO course;
 }

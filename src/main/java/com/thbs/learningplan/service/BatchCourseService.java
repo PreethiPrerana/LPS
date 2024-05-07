@@ -116,13 +116,9 @@ public class BatchCourseService {
             batchCourseDTO.setEndDate(batchCourse.getEndDate());
             batchCourseDTO.setTrainer(batchCourse.getTrainer());
 
-            // Fetch associated CourseDTO
             CourseDTO courseDTO = fetchCourseDTO(batchCourse.getBatchCourseId().getCourse());
 
-            List<CourseDTO> courseDTOList = new ArrayList<>();
-            courseDTOList.add(courseDTO); // Add the CourseDTO to a list
-
-            batchCourseDTO.setCourses(courseDTOList); // Set the list of CourseDTOs
+            batchCourseDTO.setCourse(courseDTO); // Set the CourseDTO directly
 
             batchCourseDTOs.add(batchCourseDTO);
         }
