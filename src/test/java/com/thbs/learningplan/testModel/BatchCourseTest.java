@@ -30,13 +30,13 @@ class BatchCourseTest {
         Date endDate = new Date();
         String trainer = "Test Trainer";
 
-        batchCourse.setId(batchCourseId);
+        batchCourse.setBatchCourseId(batchCourseId);
         batchCourse.setStartDate(startDate);
         batchCourse.setEndDate(endDate);
         batchCourse.setTrainer(trainer);
 
         // Test getters
-        assertEquals(batchCourseId, batchCourse.getId());
+        assertEquals(batchCourseId, batchCourse.getBatchCourseId());
         assertEquals(startDate, batchCourse.getStartDate());
         assertEquals(endDate, batchCourse.getEndDate());
         assertEquals(trainer, batchCourse.getTrainer());
@@ -48,7 +48,7 @@ class BatchCourseTest {
         BatchCourse batchCourse = new BatchCourse();
 
         // Test getters
-        assertNull(batchCourse.getId());
+        assertNull(batchCourse.getBatchCourseId());
         assertNull(batchCourse.getStartDate());
         assertNull(batchCourse.getEndDate());
         assertNull(batchCourse.getTrainer());
@@ -65,7 +65,7 @@ class BatchCourseTest {
         BatchCourse batchCourse = new BatchCourse(batchCourseId, startDate, endDate, trainer);
 
         // Test getters
-        assertEquals(batchCourseId, batchCourse.getId());
+        assertEquals(batchCourseId, batchCourse.getBatchCourseId());
         assertEquals(startDate, batchCourse.getStartDate());
         assertEquals(endDate, batchCourse.getEndDate());
         assertEquals(trainer, batchCourse.getTrainer());
