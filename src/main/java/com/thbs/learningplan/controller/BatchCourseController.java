@@ -1,6 +1,6 @@
 package com.thbs.learningplan.controller;
 
-import com.thbs.learningplan.dto.BatchCourseDTO;
+import com.thbs.learningplan.dto.CourseByBatchDTO;
 import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.service.BatchCourseService;
@@ -39,8 +39,8 @@ public class BatchCourseController {
     }
 
     @GetMapping("/batch/{batchId}")
-    public ResponseEntity<BatchCourseDTO> getBatchCourseDTO(@PathVariable Long batchId) {
-        BatchCourseDTO dto = batchCourseService.convertToDTO(batchId);
+    public ResponseEntity<CourseByBatchDTO> getBatchCourseDTO(@PathVariable Long batchId) {
+        CourseByBatchDTO dto = batchCourseService.convertToDTO(batchId);
         return ResponseEntity.ok().body(dto);
     }
 
