@@ -1,77 +1,62 @@
 package com.thbs.learningplan.controller;
+
 import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
-import com.thbs.learningplan.model.LearningPlan; 
-import com.thbs.learningplan.model.Course; 
 import com.thbs.learningplan.service.BatchCourseService;
+import com.thbs.learningplan.utility.DateRange;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/batchcourses")
+@RequestMapping("/batch-course")
 public class BatchCourseController {
 
     @Autowired
     private BatchCourseService batchCourseService;
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<BatchCourse> addBatchCourse(@RequestBody BatchCourse batchCourse) {
         BatchCourse addedBatchCourse = batchCourseService.addBatchCourse(batchCourse);
-        return new ResponseEntity<>(addedBatchCourse, HttpStatus.CREATED);
+        return ResponseEntity.ok().body(addedBatchCourse);
     }
 
-    @PostMapping("/addMultiple")
+    @PostMapping("/multiple")
     public ResponseEntity<List<BatchCourse>> addMultipleBatchCourses(@RequestBody List<BatchCourse> batchCourses) {
         List<BatchCourse> addedBatchCourses = batchCourseService.addMultipleBatchCourses(batchCourses);
-        return new ResponseEntity<>(addedBatchCourses, HttpStatus.CREATED);
+        return ResponseEntity.ok().body(addedBatchCourses);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<BatchCourse>> getAllBatchCourses() {
         List<BatchCourse> batchCourses = batchCourseService.getAllBatchCourses();
-        return new ResponseEntity<>(batchCourses, HttpStatus.OK);
+        return ResponseEntity.ok().body(batchCourses);
     }
 
-//     @GetMapping("/byBatchCourseId")
-// public ResponseEntity<List<BatchCourse>> getBatchCoursesByBatchId(
-//         @RequestParam("batchId") Long batchId,
-//         @RequestParam("learningPlanId") Long learningPlanId,
-//         @RequestParam("courseId") Long courseId) {
+    @PutMapping("/trainer")
+    public ResponseEntity<String> updateTrainer(@RequestBody BatchCourseId batchCourseId,
+            @RequestParam String trainer) {
+        batchCourseService.updateTrainer(batchCourseId, trainer);
+        return ResponseEntity.ok().body("Trainer updated succesfully");
 
-//     List<BatchCourse> batchCourses = batchCourseService.findByBatchCourseId(BatchCourseId batchCourseId);
-//     return new ResponseEntity<>(batchCourses, HttpStatus.OK);
-// }
-
-
-@PutMapping("/updateTrainer")
-public ResponseEntity<BatchCourse> updateTrainer(@RequestBody BatchCourseId batchCourseId,
-        @RequestParam String trainer) {
-    BatchCourse updatedBatchCourse = batchCourseService.updateTrainer(batchCourseId, trainer);
-    // if (updatedBatchCourse != null) {
-        return new ResponseEntity<>(updatedBatchCourse, HttpStatus.OK);
-    // } else {
-    //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    // }
-}
-
-@PutMapping("/updateDates")
-public ResponseEntity<BatchCourse> updateDates(@RequestBody BatchCourseId batchCourseId,
-        @RequestParam Date startDate, @RequestParam Date endDate) {
-    BatchCourse updatedBatchCourse = batchCourseService.updateDates(batchCourseId, startDate, endDate);
-    if (updatedBatchCourse != null) {
-        return new ResponseEntity<>(updatedBatchCourse, HttpStatus.OK);
-    } else {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-}
 
-    @DeleteMapping("/delete/{batchId}")
-    public ResponseEntity<Void> deleteBatchCourse(@PathVariable BatchCourseId batchId) {
-        batchCourseService.deleteBatchCourse(batchId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("/dates")
+    public ResponseEntity<String> updateDates(@RequestBody DateRange dateRange) {
+        batchCourseService.updateDates(dateRange);
+
+        return ResponseEntity.ok().body("Dates updated Successfully");
     }
+
+    @Transactional
+    @DeleteMapping
+    public ResponseEntity<String> deleteBatchCourse(@RequestBody BatchCourseId batchCourseId) {
+        batchCourseService.deleteBatchCourse(batchCourseId);
+        return ResponseEntity.ok().body("Deleted Successfully");
+    }
+
 }

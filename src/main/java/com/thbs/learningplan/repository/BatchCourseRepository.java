@@ -14,7 +14,6 @@ public interface BatchCourseRepository extends JpaRepository<BatchCourse, BatchC
     // Find BatchCourse by BatchCourseId
     List<BatchCourse> findByBatchCourseId(BatchCourseId batchCourseId);
 
-    // Find BatchCourse by BatchId, LearningPlanId, and CourseId
-    // List<BatchCourse> findByBatchCourseId_BatchIdAndBatchCourseId_LearningPlanIdAndBatchCourseId_CourseId(Long batchId, Long learningPlanId, Long courseId);
+    void deleteByBatchCourseId(BatchCourseId batchId);
 
 }
