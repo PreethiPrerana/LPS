@@ -1,23 +1,20 @@
-// package com.thbs.learningplan.repository;
+package com.thbs.learningplan.repository;
 
-// import com.thbs.learningplan.model.BatchCourse;
-// import org.springframework.data.jpa.repository.JpaRepository;
-// import org.springframework.stereotype.Repository;
+import com.thbs.learningplan.model.BatchCourse;
+import com.thbs.learningplan.model.BatchCourseId;
 
-// import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-// @Repository
-// public interface BatchCourseRepository extends JpaRepository<BatchCourse, Long> {
+import java.util.List;
 
-//     // Optional<BatchCourse> findByBatchCourseId(Long batchCourseId);
+@Repository
+public interface BatchCourseRepository extends JpaRepository<BatchCourse, BatchCourseId> {
 
-//     Optional<BatchCourse> findByLearningPlan_LearningPlanId(Long learningPlanId);
+    // Find BatchCourse by BatchCourseId
+    List<BatchCourse> findByBatchCourseId(BatchCourseId batchCourseId);
 
-//     Optional<BatchCourse> findByCourse_CourseId(Long courseId);
+    // Find BatchCourse by BatchId, LearningPlanId, and CourseId
+    // List<BatchCourse> findByBatchCourseId_BatchIdAndBatchCourseId_LearningPlanIdAndBatchCourseId_CourseId(Long batchId, Long learningPlanId, Long courseId);
 
-//     // void deleteByBatchCourseId(Long batchCourseId);
-
-//     void deleteByLearningPlan_LearningPlanId(Long learningPlanId);
-
-//     void deleteByCourse_CourseId(Long courseId);
-// }
+}

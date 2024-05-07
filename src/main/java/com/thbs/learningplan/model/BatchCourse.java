@@ -59,12 +59,12 @@ import lombok.Setter;
 public class BatchCourse {
 
     @EmbeddedId
-    private BatchCourseId id;
+    private BatchCourseId batchCourseId;
 
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)    
     private Date endDate;
 
     private String trainer;

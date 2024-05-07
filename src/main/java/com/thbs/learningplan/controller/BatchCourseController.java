@@ -1,96 +1,77 @@
-// package com.thbs.learningplan.controller;
+package com.thbs.learningplan.controller;
+import com.thbs.learningplan.model.BatchCourse;
+import com.thbs.learningplan.model.BatchCourseId;
+import com.thbs.learningplan.model.LearningPlan; 
+import com.thbs.learningplan.model.Course; 
+import com.thbs.learningplan.service.BatchCourseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.Date;
+import java.util.List;
 
-// import com.thbs.learningplan.model.BatchCourse;
-// import com.thbs.learningplan.service.BatchCourseService;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.web.bind.annotation.*;
+@RestController
+@RequestMapping("/batchcourses")
+public class BatchCourseController {
 
-// import java.util.Date;
-// import java.util.List;
-// import java.util.Optional;
+    @Autowired
+    private BatchCourseService batchCourseService;
 
-// @RestController
-// @RequestMapping("/batch-course")
-// public class BatchCourseController {
+    @PostMapping("/add")
+    public ResponseEntity<BatchCourse> addBatchCourse(@RequestBody BatchCourse batchCourse) {
+        BatchCourse addedBatchCourse = batchCourseService.addBatchCourse(batchCourse);
+        return new ResponseEntity<>(addedBatchCourse, HttpStatus.CREATED);
+    }
 
-//     @Autowired
-//     private BatchCourseService batchCourseService;
+    @PostMapping("/addMultiple")
+    public ResponseEntity<List<BatchCourse>> addMultipleBatchCourses(@RequestBody List<BatchCourse> batchCourses) {
+        List<BatchCourse> addedBatchCourses = batchCourseService.addMultipleBatchCourses(batchCourses);
+        return new ResponseEntity<>(addedBatchCourses, HttpStatus.CREATED);
+    }
 
-//     @PostMapping("/add")
-//     public BatchCourse addBatchCourse(@RequestBody BatchCourse batchCourse) {
-//         return batchCourseService.addBatchCourse(batchCourse);
-//     }
+    @GetMapping("/all")
+    public ResponseEntity<List<BatchCourse>> getAllBatchCourses() {
+        List<BatchCourse> batchCourses = batchCourseService.getAllBatchCourses();
+        return new ResponseEntity<>(batchCourses, HttpStatus.OK);
+    }
 
-//     @PostMapping("/multiple")
-//     public List<BatchCourse> addMultipleBatchCourses(@RequestBody List<BatchCourse> batchCourses) {
-//         return batchCourseService.addMultipleBatchCourses(batchCourses);
-//     }
+//     @GetMapping("/byBatchCourseId")
+// public ResponseEntity<List<BatchCourse>> getBatchCoursesByBatchId(
+//         @RequestParam("batchId") Long batchId,
+//         @RequestParam("learningPlanId") Long learningPlanId,
+//         @RequestParam("courseId") Long courseId) {
 
-//     @GetMapping
-//     public List<BatchCourse> getAllBatchCourses() {
-//         return batchCourseService.getAllBatchCourses();
-//     }
-
-//     @GetMapping("batch/{batchId}")
-//     public Optional<BatchCourse> getBatchCoursesByBatchId(@PathVariable Long batchId) {
-//         return batchCourseService.getBatchCoursesByBatchId(batchId);
-//     }
-
-//     @GetMapping("learningPlan/{learningPlanId}")
-//     public Optional<BatchCourse> getBatchCoursesByLearningPlanId(@PathVariable Long learningPlanId) {
-//         return batchCourseService.getBatchCoursesByLearningPlanId(learningPlanId);
-//     }
-
-//     @GetMapping("course/{courseId}")
-//     public Optional<BatchCourse> getBatchCoursesByCourseId(@PathVariable Long courseId) {
-//         return batchCourseService.getBatchCoursesByCourseId(courseId);
-//     }
-
-//     @PatchMapping("update-trainer/{batchId}")
-//     public BatchCourse updateTrainerByBatchId(@PathVariable Long batchId, @RequestParam String trainer) {
-//         return batchCourseService.updateTrainerByBatchId(batchId, trainer);
-//     }
-
-//     @PatchMapping("update-trainer/{courseId}")
-//     public BatchCourse updateTrainerByCourseId(@PathVariable Long courseId, @RequestParam String trainer) {
-//         return batchCourseService.updateTrainerByCourseId(courseId, trainer);
-//     }
-
-//     @PatchMapping("/update-trainer/{learningPlanId}")
-//     public BatchCourse updateTrainerByLearningPlanId(@PathVariable Long learningPlanId, @RequestParam String trainer) {
-//         return batchCourseService.updateTrainerByLearningPlanId(learningPlanId, trainer);
-//     }
-
-//     @PatchMapping("/update-dates/{batchId}")
-//     public BatchCourse updateDatesByBatchId(@PathVariable Long batchId, @RequestParam Date startDate,
-//             @RequestParam Date endDate) {
-//         return batchCourseService.updateDatesByBatchId(batchId, startDate, endDate);
-//     }
-
-//     @PatchMapping("/update-dates/{courseId}")
-//     public BatchCourse updateDatesByCourseId(@PathVariable Long courseId, @RequestParam Date startDate,
-//             @RequestParam Date endDate) {
-//         return batchCourseService.updateDatesByCourseId(courseId, startDate, endDate);
-//     }
-
-//     @PatchMapping("/update-dates/{learningPlanId}")
-//     public BatchCourse updateDatesByLearningPlanId(@PathVariable Long learningPlanId, @RequestParam Date startDate,
-//             @RequestParam Date endDate) {
-//         return batchCourseService.updateDatesByLearningPlanId(learningPlanId, startDate, endDate);
-//     }
-
-//     @DeleteMapping("/{batchId}")
-//     public void deleteBatchCourseByBatchId(@PathVariable Long batchId) {
-//         batchCourseService.deleteBatchCourseByBatchId(batchId);
-//     }
-
-//     @DeleteMapping("/{courseId}")
-//     public void deleteBatchCourseByCourseId(@PathVariable Long courseId) {
-//         batchCourseService.deleteBatchCourseByCourseId(courseId);
-//     }
-
-//     @DeleteMapping("/{learningPlanId}")
-//     public void deleteBatchCourseByLearningPlanId(@PathVariable Long learningPlanId) {
-//         batchCourseService.deleteBatchCourseByLearningPlanId(learningPlanId);
-//     }
+//     List<BatchCourse> batchCourses = batchCourseService.findByBatchCourseId(BatchCourseId batchCourseId);
+//     return new ResponseEntity<>(batchCourses, HttpStatus.OK);
 // }
+
+
+@PutMapping("/updateTrainer")
+public ResponseEntity<BatchCourse> updateTrainer(@RequestBody BatchCourseId batchCourseId,
+        @RequestParam String trainer) {
+    BatchCourse updatedBatchCourse = batchCourseService.updateTrainer(batchCourseId, trainer);
+    // if (updatedBatchCourse != null) {
+        return new ResponseEntity<>(updatedBatchCourse, HttpStatus.OK);
+    // } else {
+    //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    // }
+}
+
+@PutMapping("/updateDates")
+public ResponseEntity<BatchCourse> updateDates(@RequestBody BatchCourseId batchCourseId,
+        @RequestParam Date startDate, @RequestParam Date endDate) {
+    BatchCourse updatedBatchCourse = batchCourseService.updateDates(batchCourseId, startDate, endDate);
+    if (updatedBatchCourse != null) {
+        return new ResponseEntity<>(updatedBatchCourse, HttpStatus.OK);
+    } else {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+}
+
+    @DeleteMapping("/delete/{batchId}")
+    public ResponseEntity<Void> deleteBatchCourse(@PathVariable BatchCourseId batchId) {
+        batchCourseService.deleteBatchCourse(batchId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}
