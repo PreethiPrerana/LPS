@@ -168,7 +168,7 @@ public class TopicService {
                 topicRepository.delete(topic);
             } else {
                 // Throws exception if topic not found
-                throw new NotFoundException(NOT_FOUND_MSG + topicId);
+                throw new NotFoundException(NOT_FOUND_MSG);
             }
         }
     }
