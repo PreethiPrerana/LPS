@@ -75,6 +75,34 @@ class LearningPlanControllerTest {
         assertEquals(learningPlans, responseEntity.getBody());
     }
 
+    @Test
+    void testGetLearningPlanById() {
+        // Mocking the LearningPlanService
+        LearningPlanService learningPlanService = mock(LearningPlanService.class);
+
+        // Creating a test learning plan
+        Long learningPlanId = 1L;
+        LearningPlan expectedLearningPlan = new LearningPlan();
+        expectedLearningPlan.setLearningPlanId(learningPlanId);
+        expectedLearningPlan.setLearningPlanName("Test Learning Plan");
+
+        // Stubbing the behavior of learningPlanService.getLearningPlanById()
+        when(learningPlanService.getLearningPlanById(learningPlanId)).thenReturn(expectedLearningPlan);
+
+        // Creating the LearningPlanController instance with the mocked LearningPlanService
+        LearningPlanController learningPlanController = new LearningPlanController(learningPlanService);
+
+        // Invoking the getLearningPlanById() method
+        ResponseEntity<LearningPlan> response = learningPlanController.getLearningPlanById(learningPlanId);
+
+        // Verifying the response
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedLearningPlan, response.getBody());
+
+        // Verifying that the learningPlanService.getLearningPlanById() was called with the provided ID
+        verify(learningPlanService, times(1)).getLearningPlanById(learningPlanId);
+    }
+
     // @Test
     // void testGetAllLearningPlanPathDTOs() {
     //     // Sample data
@@ -158,13 +186,61 @@ class LearningPlanControllerTest {
     //     assertEquals(learningPlans, responseEntity.getBody());
     // }
 
-    // @Test
-    // void testDeleteLearningPlan() {
-    //     Long idToDelete = 1L;
+    @Test
+    void testUpdateLearningPlanName() {
+        // Mocking the LearningPlanService
+        LearningPlanService learningPlanService = mock(LearningPlanService.class);
 
-    //     ResponseEntity<?> responseEntity = learningPlanController.deleteLearningPlan(idToDelete);
+        // Creating a test learning plan
+        Long learningPlanId = 1L;
+        LearningPlan originalLearningPlan = new LearningPlan();
+        originalLearningPlan.setLearningPlanId(learningPlanId);
+        originalLearningPlan.setLearningPlanName("Original Learning Plan Name");
 
-    //     verify(learningPlanService).deleteLearningPlan(idToDelete);
-    //     assertEquals("LearningPlan deleted successfully.", responseEntity.getBody());
-    // }
+        // Creating a new learning plan name
+        String newLearningPlanName = "Updated Learning Plan Name";
+
+        // Stubbing the behavior of learningPlanService.updateLearningPlanName()
+        LearningPlan updatedLearningPlan = new LearningPlan();
+        updatedLearningPlan.setLearningPlanId(learningPlanId);
+        updatedLearningPlan.setLearningPlanName(newLearningPlanName);
+        when(learningPlanService.updateLearningPlanName(learningPlanId, newLearningPlanName))
+                .thenReturn(updatedLearningPlan);
+
+        // Creating the LearningPlanController instance with the mocked LearningPlanService
+        LearningPlanController learningPlanController = new LearningPlanController(learningPlanService);
+
+        // Invoking the updateLearningPlanName() method
+        ResponseEntity<LearningPlan> response = learningPlanController.updateLearningPlanName(learningPlanId,
+                newLearningPlanName);
+
+        // Verifying the response
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(updatedLearningPlan, response.getBody());
+
+        // Verifying that the learningPlanService.updateLearningPlanName() was called with the provided ID and new name
+        verify(learningPlanService, times(1)).updateLearningPlanName(learningPlanId, newLearningPlanName);
+    }
+
+    @Test
+    void testDeleteLearningPlanById() {
+        // Mocking the LearningPlanService
+        LearningPlanService learningPlanService = mock(LearningPlanService.class);
+
+        // Creating a test learning plan ID
+        Long learningPlanId = 1L;
+
+        // Creating the LearningPlanController instance with the mocked LearningPlanService
+        LearningPlanController learningPlanController = new LearningPlanController(learningPlanService);
+
+        // Invoking the deleteLearningPlanById() method
+        ResponseEntity<String> response = learningPlanController.deleteLearningPlanById(learningPlanId);
+
+        // Verifying the response
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Learning Plan deleted successfully", response.getBody());
+
+        // Verifying that the learningPlanService.deleteLearningPlanById() was called with the provided ID
+        verify(learningPlanService, times(1)).deleteLearningPlanById(learningPlanId);
+    }
 }
