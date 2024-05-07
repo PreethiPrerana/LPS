@@ -40,11 +40,6 @@ public class CourseController {
 
     private ResourceLoader resourceLoader;
 
-    @Autowired
-    public void ExcelController(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
-    }
-
     /**
      * Constructs a new {@code CourseController} with the specified
      * {@code CourseService}.
@@ -53,9 +48,11 @@ public class CourseController {
      * @param bulkUploadService the bulk upload service
      */
     @Autowired
-    public CourseController(CourseService courseService, BulkUploadService bulkUploadService) {
+    public CourseController(CourseService courseService, BulkUploadService bulkUploadService,
+            ResourceLoader resourceLoader) {
         this.courseService = courseService;
         this.bulkUploadService = bulkUploadService;
+        this.resourceLoader = resourceLoader;
     }
 
     /**
@@ -85,15 +82,22 @@ public class CourseController {
     /**
      * Handles the download functionality of an Excel file.
      *
-     * This method serves the purpose of downloading an Excel file by providing it as a response to a GET request. 
-     * It loads the Excel file named "template.xlsx" from the classpath and sets the necessary response headers for 
-     * file download. If the file is successfully loaded, it returns a ResponseEntity containing the file content 
-     * as the response body along with appropriate headers indicating the file type and attachment disposition. 
-     * If an error occurs during the file loading process, it returns a ResponseEntity with an INTERNAL_SERVER_ERROR 
+     * This method serves the purpose of downloading an Excel file by providing it
+     * as a response to a GET request.
+     * It loads the Excel file named "template.xlsx" from the classpath and sets the
+     * necessary response headers for
+     * file download. If the file is successfully loaded, it returns a
+     * ResponseEntity containing the file content
+     * as the response body along with appropriate headers indicating the file type
+     * and attachment disposition.
+     * If an error occurs during the file loading process, it returns a
+     * ResponseEntity with an INTERNAL_SERVER_ERROR
      * status indicating the failure.
      *
-     * @return a ResponseEntity<Resource> representing the response entity containing the Excel file as the response 
-     *         body along with appropriate headers, or an INTERNAL_SERVER_ERROR response entity if an error occurs.
+     * @return a ResponseEntity<Resource> representing the response entity
+     *         containing the Excel file as the response
+     *         body along with appropriate headers, or an INTERNAL_SERVER_ERROR
+     *         response entity if an error occurs.
      */
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadExcelFile() {
