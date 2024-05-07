@@ -3,9 +3,11 @@ package com.thbs.learningplan.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.LearningPlan;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The {@code LearningPlanRepository} interface provides CRUD operations for the
@@ -22,5 +24,7 @@ public interface LearningPlanRepository extends JpaRepository<LearningPlan, Long
     List<LearningPlan> findByType(String type);
 
     List<LearningPlan> findByLearningPlanNameIgnoreCase(String learningPlanName);
+
+    Optional<LearningPlan> findByLearningPlanId(Long learningPlanId);
 
 }
