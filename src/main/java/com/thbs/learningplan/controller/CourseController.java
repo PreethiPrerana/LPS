@@ -1,11 +1,18 @@
 package com.thbs.learningplan.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 
 import com.thbs.learningplan.dto.CourseDTO;
 import com.thbs.learningplan.model.Course;
@@ -31,6 +38,13 @@ public class CourseController {
      * The service responsible for handling bulk upload functionality.
      */
     private final BulkUploadService bulkUploadService;
+
+    private ResourceLoader resourceLoader;
+
+    @Autowired
+    public void ExcelController(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     /**
      * Constructs a new {@code CourseController} with the specified
@@ -67,6 +81,37 @@ public class CourseController {
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         bulkUploadService.uploadFile(file);
         return ResponseEntity.ok().body("File uploaded successfully.");
+    }
+
+    /**
+     * Handles the download functionality of an Excel file.
+     *
+     * This method serves the purpose of downloading an Excel file by providing it as a response to a GET request. 
+     * It loads the Excel file named "template.xlsx" from the classpath and sets the necessary response headers for 
+     * file download. If the file is successfully loaded, it returns a ResponseEntity containing the file content 
+     * as the response body along with appropriate headers indicating the file type and attachment disposition. 
+     * If an error occurs during the file loading process, it returns a ResponseEntity with an INTERNAL_SERVER_ERROR 
+     * status indicating the failure.
+     *
+     * @return a ResponseEntity<Resource> representing the response entity containing the Excel file as the response 
+     *         body along with appropriate headers, or an INTERNAL_SERVER_ERROR response entity if an error occurs.
+     */
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadExcelFile() {
+        try {
+            Resource fileResource = resourceLoader.getResource("classpath:template.xlsx");
+            InputStream inputStream = fileResource.getInputStream();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", "template.xlsx");
+
+            return new ResponseEntity<>(fileResource, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            // Handle exception
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
