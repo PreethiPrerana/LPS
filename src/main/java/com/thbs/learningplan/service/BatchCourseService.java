@@ -84,10 +84,8 @@ public class BatchCourseService {
 
         List<CourseDTO> courseDTOs = new ArrayList<>();
         for (BatchCourse batchCourse : batchCourses) {
-            CourseDTO courseDTO = new CourseDTO();
             Course course = batchCourse.getBatchCourseId().getCourse();
-            courseDTO.setCourseId(course.getCourseId());
-            courseDTO.setCourseName(course.getCourseName());
+            CourseDTO courseDTO = fetchCourseDTO(course);
             courseDTOs.add(courseDTO);
         }
         batchCourseDTO.setCourses(courseDTOs);
