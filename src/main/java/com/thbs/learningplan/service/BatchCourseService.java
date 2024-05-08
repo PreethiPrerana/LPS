@@ -41,6 +41,13 @@ public class BatchCourseService {
         this.topicService = topicService;
     }
 
+     /**
+     * Adds a new batch course.
+     * 
+     * @param batchCourse The batch course to add.
+     * @return The added batch course.
+     * @throws NotFoundException if the associated learning plan or course is not found.
+     */
     public BatchCourse addBatchCourse(BatchCourse batchCourse) {
         Long courseId = batchCourse.getBatchCourseId().getCourse().getCourseId();
         Long learningPlanId = batchCourse.getBatchCourseId().getLearningPlan().getLearningPlanId();
@@ -60,6 +67,13 @@ public class BatchCourseService {
         return batchCourseRepository.save(batchCourse);
     }
 
+
+    /**
+     * Adds multiple batch courses.
+     * 
+     * @param batchCourses The list of batch courses to add.
+     * @return The list of added batch courses.
+     */
     public List<BatchCourse> addMultipleBatchCourses(List<BatchCourse> batchCourses) {
         List<BatchCourse> batchCourseList = new ArrayList<>();
         for (BatchCourse batchCourse : batchCourses) {
@@ -68,10 +82,23 @@ public class BatchCourseService {
         return batchCourseList;
     }
 
+     /**
+     * Retrieves all batch courses.
+     * 
+     * @return The list of all batch courses.
+     */
+    
     public List<BatchCourse> getAllBatchCourses() {
         return batchCourseRepository.findAll();
     }
 
+
+    /**
+     * Converts batch courses to DTO based on batchId.
+     * 
+     * @param batchId The batch ID.
+     * @return The DTO containing batch courses.
+     */
     public CourseByBatchDTO convertToDTO(Long batchId) {
         List<BatchCourse> batchCourses = batchCourseRepository.findByBatchCourseIdBatchId(batchId);
         CourseByBatchDTO batchCourseDTO = new CourseByBatchDTO();
@@ -87,6 +114,12 @@ public class BatchCourseService {
         return batchCourseDTO;
     }
 
+    /**
+     * Generates plan DTO based on batch ID.
+     * 
+     * @param batchId The batch ID.
+     * @return The generated plan DTO.
+     */
     public PlanDTO generatePlanDTO(Long batchId) {
         // Fetch all BatchCourses associated with the batchId
         List<BatchCourse> batchCourses = batchCourseRepository.findByBatchCourseIdBatchId(batchId);
@@ -131,11 +164,26 @@ public class BatchCourseService {
         return planDTO;
     }
 
+      /**
+     * Fetches CourseDTO for the given Course.
+     * 
+     * @param course The Course entity.
+     * @return The CourseDTO.
+     */
     private CourseDTO fetchCourseDTO(Course course) {
         // Use CourseService to convert Course entity to CourseDTO
         return courseService.convertToDTO(course);
     }
 
+    /**
+     * Updates the trainer for a batch course.
+     * 
+     * @param batchCourseId The ID of the batch course.
+     * @param trainer       The new trainer name.
+     * @return The updated batch course.
+     * @throws InvalidDataException if the trainer name is null or empty.
+     * @throws NotFoundException   if the batch course is not found.
+     */
     public BatchCourse updateTrainer(BatchCourseId batchCourseId, String trainer) {
         if (trainer == null || trainer.isEmpty())
             throw new InvalidDataException("Trainer cannot be null or empty");
@@ -148,6 +196,14 @@ public class BatchCourseService {
         return batchCourseRepository.save(batchCourse);
     }
 
+
+    /**
+     * Updates the start and end dates for a batch course.
+     * 
+     * @param dateRange The DateRange object containing batch course ID, start date, and end date.
+     * @return The updated batch course.
+     * @throws NotFoundException if the batch course is not found.
+     */
     public BatchCourse updateDates(DateRange dateRange) {
         Optional<BatchCourse> optionalBatchCourse = batchCourseRepository.findById(dateRange.getBatchCourseId());
         if (!optionalBatchCourse.isPresent()) {
@@ -159,6 +215,13 @@ public class BatchCourseService {
         return batchCourseRepository.save(batchCourse);
     }
 
+
+    /**
+     * Deletes a batch course.
+     * 
+     * @param batchId The ID of the batch course to delete.
+     * @throws NotFoundException if the batch course is not found.
+     */
     public void deleteBatchCourse(BatchCourseId batchId) {
         Optional<BatchCourse> optionalBatchCourse = batchCourseRepository.findById(batchId);
         if (optionalBatchCourse.isPresent()) {
