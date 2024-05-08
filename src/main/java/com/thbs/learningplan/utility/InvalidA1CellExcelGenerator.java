@@ -37,6 +37,11 @@ public class InvalidA1CellExcelGenerator {
             headerRow.createCell(0).setCellValue("Difficulty");
             headerRow.createCell(1).setCellValue("BASIC");
 
+            // Create top row
+            Row dataRow0 = sheet.createRow(2);
+            dataRow0.createCell(0).setCellValue("TOPIC");
+            dataRow0.createCell(1).setCellValue("DESCRIPTION");
+
             // Create data rows
             Row dataRow1 = sheet.createRow(3);
             dataRow1.createCell(0).setCellValue("Data1");

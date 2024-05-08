@@ -1,7 +1,6 @@
 package com.thbs.learningplan.testService;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,7 +10,6 @@ import com.thbs.learningplan.exception.DuplicateEntryException;
 import com.thbs.learningplan.exception.FileProcessingException;
 import com.thbs.learningplan.exception.InvalidSheetFormatException;
 import com.thbs.learningplan.model.Course;
-import com.thbs.learningplan.model.Topic;
 import com.thbs.learningplan.repository.CourseRepository;
 import com.thbs.learningplan.repository.TopicRepository;
 import com.thbs.learningplan.service.BulkUploadService;
@@ -24,15 +22,12 @@ import com.thbs.learningplan.utility.InvalidNoDescriptionFileGenerator;
 import com.thbs.learningplan.utility.InvalidOneCellExcelFileGenerator;
 import com.thbs.learningplan.utility.MockExcelFileGenerator;
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

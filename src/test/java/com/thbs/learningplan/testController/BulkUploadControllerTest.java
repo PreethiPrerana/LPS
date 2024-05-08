@@ -4,10 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.http.MediaType;
 
 import com.thbs.learningplan.utility.MockExcelFileGenerator;
 import com.thbs.learningplan.utility.JPEGFileGenerator;
@@ -17,6 +19,8 @@ import com.thbs.learningplan.utility.TextFileGenerator;
 
 import java.io.File;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,5 +86,17 @@ class BulkUploadControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.multipart("/course/upload").file(file))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.message").value("Error processing the uploaded file."));
+    }
+
+     @Test
+    void testDownloadExcelFile() throws Exception {
+        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/course/download"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        assertEquals(MediaType.APPLICATION_OCTET_STREAM_VALUE, response.getContentType());
+        
+        String contentDisposition = response.getHeader("Content-Disposition");
+        assertTrue(contentDisposition.contains("filename=\"template.xlsx\""));
     }
 }

@@ -32,6 +32,10 @@ public class InvalidOneCellExcelFileGenerator {
             // Create a new sheet
             Sheet sheet = workbook.createSheet("Sheet1");
 
+            // Create top row
+            Row dataRow0 = sheet.createRow(2);
+            dataRow0.createCell(0).setCellValue("TOPIC");
+
             // Create header row
             Row headerRow = sheet.createRow(0);
             headerRow.createCell(0).setCellValue("Level");

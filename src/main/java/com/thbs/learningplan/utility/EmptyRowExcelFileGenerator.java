@@ -33,6 +33,11 @@ public class EmptyRowExcelFileGenerator {
             headerRow.createCell(0).setCellValue("Level");
             headerRow.createCell(1).setCellValue("BASIC");
 
+            // Create top row
+            Row dataRow0 = sheet.createRow(2);
+            dataRow0.createCell(0).setCellValue("TOPIC");
+            dataRow0.createCell(1).setCellValue("DESCRIPTION");
+
             // Write workbook content to ByteArrayOutputStream
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);
