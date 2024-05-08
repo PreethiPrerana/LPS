@@ -51,4 +51,11 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleFileUploadException(FileUploadException ex) {
         return new ErrorResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
+    @ExceptionHandler(TemplateDownloadException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorResponse handleTemplateDownloadException(TemplateDownloadException ex) {
+        return new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
 }

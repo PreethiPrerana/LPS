@@ -1,7 +1,5 @@
 package com.thbs.learningplan.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 
 import com.thbs.learningplan.dto.CourseDTO;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.service.BulkUploadService;
 import com.thbs.learningplan.service.CourseService;
+import com.thbs.learningplan.service.ExcelDownloadService;
 
 /**
  * The {@code CourseController} class handles HTTP requests related to courses.
@@ -38,7 +33,10 @@ public class CourseController {
      */
     private final BulkUploadService bulkUploadService;
 
-    private ResourceLoader resourceLoader;
+     /**
+     * The service responsible for downloading bulk upload file template.
+     */
+    private final ExcelDownloadService excelDownloadService;
 
     /**
      * Constructs a new {@code CourseController} with the specified
@@ -49,10 +47,10 @@ public class CourseController {
      */
     @Autowired
     public CourseController(CourseService courseService, BulkUploadService bulkUploadService,
-            ResourceLoader resourceLoader) {
+            /*ResourceLoader resourceLoader*/ ExcelDownloadService excelDownloadService) {
         this.courseService = courseService;
         this.bulkUploadService = bulkUploadService;
-        this.resourceLoader = resourceLoader;
+        this.excelDownloadService = excelDownloadService;
     }
 
     /**
@@ -101,20 +99,7 @@ public class CourseController {
      */
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadExcelFile() {
-        try {
-            Resource fileResource = resourceLoader.getResource("classpath:template.xlsx");
-            InputStream inputStream = fileResource.getInputStream();
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-            headers.setContentDispositionFormData("attachment", "template.xlsx");
-
-            return new ResponseEntity<>(fileResource, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            // Handle exception
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return excelDownloadService.downloadTemplate();
     }
 
     /**
