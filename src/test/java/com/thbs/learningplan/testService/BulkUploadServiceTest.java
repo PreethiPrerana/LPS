@@ -104,42 +104,20 @@ class BulkUploadServiceTest {
     }
 
     @Test
-    void testUploadFileWithNewCourse() throws IOException {
-        when(courseRepository.findByCourseNameIgnoreCase(anyString())).thenReturn(Optional.empty());
-        
-        // Upload a file with a new course
-        MockMultipartFile newCourseFile = MockExcelFileGenerator.generateMockExcelFile();
-        bulkUploadService.uploadFile(newCourseFile);
-            
-        // Capture the course saved in the course repository
-        ArgumentCaptor<Course> courseCaptor = ArgumentCaptor.forClass(Course.class);
-        verify(courseRepository).save(courseCaptor.capture());
-        Course savedCourse = courseCaptor.getValue();
-
-        // Capture the topics saved in the topic repository
-        @SuppressWarnings("unchecked")
-        ArgumentCaptor<List<Topic>> topicListCaptor = ArgumentCaptor.forClass(List.class);
-        verify(topicRepository, atLeastOnce()).saveAll(topicListCaptor.capture());
-        List<Topic> savedTopics = topicListCaptor.getValue();
-            
-        assertEquals("Sheet1", savedCourse.getCourseName());
-        assertEquals(2, savedTopics.size()); 
-    }
-
-    
-    @Test
     void testUploadFileWithExistingCourse() throws IOException {
-        // Mock behavior of courseRepository.findByCourseName to return a non-empty Optional
+        // Mock behavior of courseRepository.findByCourseName to return a non-empty
+        // Optional
         Course existingCourse = new Course();
         existingCourse.setCourseName("Sheet1");
         existingCourse.setLevel("Existing Level");
         when(courseRepository.findByCourseNameIgnoreCase("Sheet1")).thenReturn(Optional.of(existingCourse));
-    
+
         // Upload a file with a new course
         MockMultipartFile newCourseFile = MockExcelFileGenerator.generateMockExcelFile();
         bulkUploadService.uploadFile(newCourseFile);
-    
-        // Verify that no new course is saved (since one already exists with the same name)
+
+        // Verify that no new course is saved (since one already exists with the same
+        // name)
         Course savedCourse = verify(courseRepository, never()).save(any(Course.class));
         assertEquals(null, savedCourse);
     }

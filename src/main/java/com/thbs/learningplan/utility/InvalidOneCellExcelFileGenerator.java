@@ -37,10 +37,10 @@ public class InvalidOneCellExcelFileGenerator {
             headerRow.createCell(0).setCellValue("Level");
 
             // Create data rows
-            Row dataRow1 = sheet.createRow(1);
+            Row dataRow1 = sheet.createRow(3);
             dataRow1.createCell(0).setCellValue("Data1");
 
-            Row dataRow2 = sheet.createRow(2);
+            Row dataRow2 = sheet.createRow(4);
             dataRow2.createCell(0).setCellValue("Data2");
 
             // Write workbook content to ByteArrayOutputStream

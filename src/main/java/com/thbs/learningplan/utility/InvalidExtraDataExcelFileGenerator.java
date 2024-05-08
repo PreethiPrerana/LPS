@@ -38,12 +38,12 @@ public class InvalidExtraDataExcelFileGenerator {
             headerRow.createCell(1).setCellValue("BASIC");
 
             // Create data rows
-            Row dataRow1 = sheet.createRow(1);
+            Row dataRow1 = sheet.createRow(3);
             dataRow1.createCell(0).setCellValue("topic1");
             dataRow1.createCell(1).setCellValue("desc1");
             dataRow1.createCell(2).setCellValue("ExtraData1"); // Data in cell C1
 
-            Row dataRow2 = sheet.createRow(2);
+            Row dataRow2 = sheet.createRow(4);
             dataRow2.createCell(0).setCellValue("topic2");
             dataRow2.createCell(1).setCellValue("desc2");
 
