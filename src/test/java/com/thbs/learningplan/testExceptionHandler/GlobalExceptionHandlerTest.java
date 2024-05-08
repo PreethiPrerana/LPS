@@ -18,6 +18,7 @@ import com.thbs.learningplan.exception.GlobalExceptionHandler;
 import com.thbs.learningplan.exception.InvalidDataException;
 import com.thbs.learningplan.exception.InvalidSheetFormatException;
 import com.thbs.learningplan.exception.NotFoundException;
+import com.thbs.learningplan.exception.TemplateDownloadException;
 
 @ExtendWith(SpringExtension.class)
 
@@ -88,5 +89,20 @@ class GlobalExceptionHandlerTest {
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
         assertEquals(errorMessage, response.getMessage());
+    }
+
+    @Test
+    void testHandleTemplateDownloadException() {
+        // Create a TemplateDownloadException with a specific message
+        TemplateDownloadException exception = new TemplateDownloadException(
+                "Error occurred while downloading template");
+
+        // Call the exception handler method
+        ErrorResponse errorResponse = globalExceptionHandler.handleTemplateDownloadException(exception);
+
+        // Verify that the returned ErrorResponse has the correct status code and
+        // message
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatus());
+        assertEquals("Error occurred while downloading template", errorResponse.getMessage());
     }
 }

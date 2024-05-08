@@ -39,8 +39,6 @@
 //     private String trainer;
 // }
 
-
-
 package com.thbs.learningplan.model;
 
 import java.util.Date;
@@ -50,6 +48,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The {@code BatchCourseDTO} class represents a data transfer object (DTO) for
+ * batch courses.
+ * It encapsulates information about a batch course, including its start date,
+ * end date, trainer,
+ * associated course name, course ID, and list of topics.
+ */
 @Getter
 @Setter
 @AllArgsConstructor
@@ -64,7 +69,7 @@ public class BatchCourse {
     @Temporal(TemporalType.DATE)
     private Date startDate;
 
-    @Temporal(TemporalType.DATE)    
+    @Temporal(TemporalType.DATE)
     private Date endDate;
 
     private String trainer;
