@@ -55,7 +55,7 @@ public class BatchCourseController {
     public ResponseEntity<String> updateTrainer(@RequestBody BatchCourseId batchCourseId,
             @RequestParam String trainer) {
         batchCourseService.updateTrainer(batchCourseId, trainer);
-        return ResponseEntity.ok().body("Trainer updated succesfully");
+        return ResponseEntity.ok().body("Trainer updated successfully");
 
     }
 
