@@ -14,9 +14,7 @@ import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.model.LearningPlan;
-import com.thbs.learningplan.model.Topic;
 import com.thbs.learningplan.repository.BatchCourseRepository;
-import com.thbs.learningplan.repository.CourseRepository;
 import com.thbs.learningplan.repository.LearningPlanRepository;
 import com.thbs.learningplan.utility.DateRange;
 
@@ -32,16 +30,13 @@ public class BatchCourseService {
     private BatchCourseRepository batchCourseRepository;
     private LearningPlanRepository learningPlanRepository;
     private CourseService courseService;
-    private CourseRepository courseRepository;
     private TopicService topicService;
 
     @Autowired
     public BatchCourseService(BatchCourseRepository batchCourseRepository,
-            LearningPlanRepository learningPlanRepository, CourseRepository courseRepository,
-            CourseService courseService, TopicService topicService) {
+            LearningPlanRepository learningPlanRepository, CourseService courseService, TopicService topicService) {
         this.batchCourseRepository = batchCourseRepository;
         this.learningPlanRepository = learningPlanRepository;
-        this.courseRepository = courseRepository;
         this.courseService = courseService;
         this.topicService = topicService;
     }

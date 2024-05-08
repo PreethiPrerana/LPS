@@ -30,7 +30,7 @@ public class ExcelDownloadService {
 
             return new ResponseEntity<>(fileResource, headers, HttpStatus.OK);
         } catch (Exception e) {
-            throw new TemplateDownloadException("Error occurred while downloading template", e);
+            throw new TemplateDownloadException("Error occurred while downloading template");
         }
     }
 }

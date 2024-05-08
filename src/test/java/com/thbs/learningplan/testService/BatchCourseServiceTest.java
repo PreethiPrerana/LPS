@@ -127,79 +127,6 @@ class BatchCourseServiceTest {
         assertThrows(NotFoundException.class, () -> batchCourseService.addBatchCourse(batchCourse));
     }
 
-    // @Test
-    // void testAddMultipleBatchCourses() {
-    // // Prepare data
-    // List<BatchCourse> batchCoursesInput = new ArrayList<>();
-    // List<BatchCourse> expectedBatchCourses = new ArrayList<>();
-    // for (int i = 0; i < 3; i++) {
-    // BatchCourse batchCourse = new BatchCourse();
-    // // Set properties of the batch course
-    // batchCoursesInput.add(batchCourse);
-    // expectedBatchCourses.add(batchCourse);
-    // }
-
-    // // Mocking behavior
-    // when(batchCourseRepository.save(any(BatchCourse.class))).thenAnswer(invocation
-    // -> invocation.getArgument(0));
-
-    // // Call the method
-    // List<BatchCourse> result =
-    // batchCourseService.addMultipleBatchCourses(batchCoursesInput);
-
-    // // Verify the result
-    // assertNotNull(result);
-    // assertEquals(expectedBatchCourses.size(), result.size());
-    // for (int i = 0; i < expectedBatchCourses.size(); i++) {
-    // assertEquals(expectedBatchCourses.get(i), result.get(i));
-    // }
-
-    // // Verify that addBatchCourse method was called for each input batch course
-    // verify(batchCourseRepository,
-    // times(batchCoursesInput.size())).save(any(BatchCourse.class));
-    // }
-
-    // @Test
-    // void testConvertToDTO() {
-    // // Prepare data
-    // Long batchId = 1L;
-    // BatchCourseRepository batchCourseRepository =
-    // mock(BatchCourseRepository.class);
-    // BatchCourseService batchCourseService = new
-    // BatchCourseService(batchCourseRepository, ...); // Pass required dependencies
-
-    // List<BatchCourse> batchCourses = new ArrayList<>();
-    // batchCourses.add(createBatchCourse(1L, "Course A"));
-    // batchCourses.add(createBatchCourse(2L, "Course B"));
-
-    // when(batchCourseRepository.findByBatchCourseIdBatchId(batchId)).thenReturn(batchCourses);
-
-    // // Call the method
-    // CourseByBatchDTO result = batchCourseService.convertToDTO(batchId);
-
-    // // Verify the result
-    // assertNotNull(result);
-    // assertEquals(batchId, result.getBatchId());
-    // assertEquals(2, result.getCourses().size()); // Assuming there are two batch
-    // courses
-
-    // // Verify the courseDTOs
-    // List<CourseDTO> courseDTOs = result.getCourses();
-    // assertEquals("Course A", courseDTOs.get(0).getCourseName());
-    // assertEquals("Course B", courseDTOs.get(1).getCourseName());
-    // }
-
-    // private BatchCourse createBatchCourse(Long courseId, String courseName) {
-    // BatchCourse batchCourse = new BatchCourse();
-    // Course course = new Course();
-    // course.setCourseId(courseId);
-    // course.setCourseName(courseName);
-    // BatchCourseId batchCourseId = new BatchCourseId();
-    // batchCourseId.setCourse(course);
-    // batchCourse.setBatchCourseId(batchCourseId);
-    // return batchCourse;
-    // }
-
     @Test
     void testGetAllBatchCourses() {
         // Prepare data
@@ -252,73 +179,12 @@ class BatchCourseServiceTest {
     }
 
     @Test
-    void testUpdateTrainer_NullTrainer() {
+    void testUpdateTrainer_InvalidDataException() {
         BatchCourseId batchCourseId = new BatchCourseId();
 
         assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, null));
-    }
-
-    @Test
-    void testUpdateTrainer_EmptyTrainer() {
-        BatchCourseId batchCourseId = new BatchCourseId();
-
         assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, ""));
     }
-
-    // @Test
-    // void testUpdateDates_Success() {
-    // // Prepare data
-
-    // // BatchCourse batchCourse = new BatchCourse();
-    // // batchCourse.setBatchCourseId(new BatchCourseId(1L, new LearningPlan(),
-    // createSampleCourse()));
-
-    // BatchCourseId batchCourseId = new BatchCourseId(1L, new LearningPlan(),
-    // createSampleCourse());
-    // DateRange dateRange = new DateRange();
-    // dateRange.setBatchCourseId(batchCourseId);
-    // BatchCourse batchCourse = new BatchCourse();
-
-    // // Mocking behavior
-    // when(batchCourseRepository.findById(dateRange.getBatchCourseId())).thenReturn(Optional.of(batchCourse));
-
-    // // Call the method
-    // BatchCourse result = batchCourseService.updateDates(dateRange);
-
-    // // Verify the result
-    // // assertNotNull(result);
-    // assertEquals(dateRange.getStartDate(), result.getStartDate());
-    // assertEquals(dateRange.getEndDate(), result.getEndDate());
-    // }
-
-    // @Test
-    // void testUpdateDates_BatchCourseNotFound() {
-    // // Prepare data
-    // BatchCourseId batchCourseId = createSampleBatchCourseId();
-    // DateRange dateRange = new DateRange();
-
-    // // Mocking behavior
-    // when(batchCourseRepository.findById(batchCourseId)).thenReturn(Optional.empty());
-
-    // // Assert that NotFoundException is thrown
-    // assertThrows(NotFoundException.class, () ->
-    // batchCourseService.updateDates(dateRange));
-    // }
-
-    // // Helper methods to create sample data
-    // private BatchCourseId createSampleBatchCourseId() {
-    // BatchCourseId batchCourseId = new BatchCourseId();
-    // batchCourseId.setBatchId(1L); // Set a valid batchId
-    // // Set other properties as needed
-    // return batchCourseId;
-    // }
-
-    // private BatchCourse createSampleBatchCourse() {
-    // BatchCourse batchCourse = new BatchCourse();
-    // batchCourse.setBatchCourseId(createSampleBatchCourseId());
-    // // Set other properties as needed
-    // return batchCourse;
-    // }
 
     @Test
     void testDeleteBatchCourse_Success() {

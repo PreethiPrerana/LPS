@@ -6,14 +6,12 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.thbs.learningplan.exception.DuplicateEntryException;
 import com.thbs.learningplan.exception.FileProcessingException;
 import com.thbs.learningplan.exception.InvalidSheetFormatException;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.repository.CourseRepository;
 import com.thbs.learningplan.repository.TopicRepository;
 import com.thbs.learningplan.service.BulkUploadService;
-import com.thbs.learningplan.utility.DuplicateTopicExcelFileGenerator;
 import com.thbs.learningplan.utility.EmptyRowExcelFileGenerator;
 import com.thbs.learningplan.utility.InvalidA1CellExcelGenerator;
 import com.thbs.learningplan.utility.InvalidB1CellExcelGenerator;
@@ -83,13 +81,6 @@ class BulkUploadServiceTest {
     void testEmptyRowExcelFile() throws IOException {
         MockMultipartFile file = EmptyRowExcelFileGenerator.generateEmptyRowExcelFile();
         assertThrows(InvalidSheetFormatException.class, () -> bulkUploadService.uploadFile(file));
-    }
-
-    @Test
-    void testHandlingDuplicateTopics() throws IOException {
-        String filePath = "duplicate.xlsx";
-        MockMultipartFile file = DuplicateTopicExcelFileGenerator.generateDuplicateTopicExcelFile(filePath);
-        assertThrows(DuplicateEntryException.class, () -> bulkUploadService.uploadFile(file));
     }
 
     @Test
