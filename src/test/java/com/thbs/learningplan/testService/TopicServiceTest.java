@@ -42,17 +42,21 @@ class TopicServiceTest {
         topic.setDescription("Test Description");
     }
 
-    @Test
-    void testAddTopicWithValidation_Success() {
-        when(topicRepository.existsByTopicNameAndCourse(anyString(), any(Course.class))).thenReturn(false);
+@Test
+void testAddTopicWithValidation_Success() {
+    // Stub the method call with specific arguments
+    when(topicRepository.existsByTopicNameAndCourse(eq(topic.getTopicName()), eq(topic.getCourse()))).thenReturn(false);
 
-        when(topicRepository.save(any(Topic.class))).thenReturn(topic);
+    // Stub the save method to return the topic
+    when(topicRepository.save(any(Topic.class))).thenReturn(topic);
 
-        Topic addedTopic = topicService.addTopicWithValidation(topic);
+    // Call the method under test
+    Topic addedTopic = topicService.addTopicWithValidation(topic);
 
-        assertNotNull(addedTopic);
-        assertEquals(topic, addedTopic);
-    }
+    // Assertions
+    assertNotNull(addedTopic);
+    assertEquals(topic, addedTopic);
+}
 
     @Test
     void testAddTopicWithValidation_InvalidDataException() {

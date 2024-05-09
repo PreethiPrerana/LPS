@@ -43,7 +43,9 @@ class GlobalExceptionHandlerTest {
         String errorMessage = "Invalid learning plan data";
         when(mockException.getMessage()).thenReturn(errorMessage);
 
-        ErrorResponse response = globalExceptionHandler.handleInvalidDataException(mockException);
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+
+        ErrorResponse response = handler.handleInvalidDataException(mockException);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
         assertEquals(errorMessage, response.getMessage());
@@ -55,7 +57,8 @@ class GlobalExceptionHandlerTest {
         String errorMessage = "Duplicate learning plan detected";
         when(mockException.getMessage()).thenReturn(errorMessage);
 
-        ErrorResponse response = globalExceptionHandler.handleDuplicateEntryException(mockException);
+                GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        ErrorResponse response = handler.handleDuplicateEntryException(mockException);
 
         assertEquals(HttpStatus.CONFLICT, response.getStatus());
         assertEquals(errorMessage, response.getMessage());
@@ -67,7 +70,8 @@ class GlobalExceptionHandlerTest {
         String errorMessage = "Invalid Sheet Format";
         when(mockException.getMessage()).thenReturn(errorMessage);
 
-        ErrorResponse response = globalExceptionHandler.handleInvalidSheetFormatException(mockException);
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        ErrorResponse response = handler.handleInvalidSheetFormatException(mockException);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
         assertEquals(errorMessage, response.getMessage());
@@ -79,7 +83,8 @@ class GlobalExceptionHandlerTest {
         String errorMessage = "Issue with File Upload";
         when(mockException.getMessage()).thenReturn(errorMessage);
 
-        ErrorResponse response = globalExceptionHandler.handleFileUploadException(mockException);
+                GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        ErrorResponse response = handler.handleFileUploadException(mockException);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatus());
         assertEquals(errorMessage, response.getMessage());
@@ -92,7 +97,8 @@ class GlobalExceptionHandlerTest {
                 "Error occurred while downloading template");
 
         // Call the exception handler method
-        ErrorResponse errorResponse = globalExceptionHandler.handleTemplateDownloadException(exception);
+        GlobalExceptionHandler handler = new GlobalExceptionHandler();
+        ErrorResponse errorResponse = handler.handleTemplateDownloadException(exception);
 
         // Verify that the returned ErrorResponse has the correct status code and
         // message

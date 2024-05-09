@@ -285,8 +285,6 @@ class LearningPlanServiceTest {
     void testDeleteLearningPlanById_LearningPlanNotFound() {
         Long id = 1L;
 
-        when(learningPlanRepository.findById(id)).thenReturn(Optional.empty());
-
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             learningPlanService.deleteLearningPlanById(id);
         });

@@ -1,7 +1,10 @@
 package com.thbs.learningplan.testController;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,9 +13,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.http.MediaType;
 
 import com.thbs.learningplan.utility.MockExcelFileGenerator;
+import com.thbs.learningplan.controller.CourseController;
+import com.thbs.learningplan.service.BulkUploadService;
 import com.thbs.learningplan.utility.JPEGFileGenerator;
 import com.thbs.learningplan.utility.PDFFileGenerator;
 import com.thbs.learningplan.utility.PNGFileGenerator;
@@ -22,15 +29,26 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 class BulkUploadControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
+
+    @Mock
+    private CourseController courseController;
+
+    @Mock
+    private BulkUploadService bulkUploadService;
+
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(courseController).build();
+    }
 
     @Test
     void testFileUploadSuccess() throws Exception {
@@ -47,6 +65,7 @@ class BulkUploadControllerTest {
         File pdfFile = PDFFileGenerator.generatePDFFile(filePath);
 
         MockMultipartFile file = PDFFileGenerator.convertToMockMultipartFile(pdfFile);
+        when(bulkUploadService.uploadFile(file))
 
         mockMvc.perform(MockMvcRequestBuilders.multipart("/course/upload").file(file))
                 .andExpect(status().isInternalServerError())
@@ -89,14 +108,14 @@ class BulkUploadControllerTest {
                 .andExpect(jsonPath("$.message").value("Error processing the uploaded file."));
     }
 
-     @Test
+    @Test
     void testDownloadExcelFile() throws Exception {
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/course/download"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
         assertEquals(MediaType.APPLICATION_OCTET_STREAM_VALUE, response.getContentType());
-        
+
         String contentDisposition = response.getHeader("Content-Disposition");
         assertTrue(contentDisposition.contains("filename=\"template.xlsx\""));
     }
