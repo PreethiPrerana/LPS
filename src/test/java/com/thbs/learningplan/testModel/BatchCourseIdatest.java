@@ -10,7 +10,6 @@ import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.model.LearningPlan;
 
-@SpringBootTest
 class BatchCourseIdTest {
 
     @Test

@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.model.LearningPlan;
 
-@SpringBootTest
 class LearningPlanTest {
 
     @Test

@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootTest
-@ComponentScan("com.thbs.learningplan")
 class LearningplanApplicationTests {
 	@Autowired
 	private LearningplanApplication application;

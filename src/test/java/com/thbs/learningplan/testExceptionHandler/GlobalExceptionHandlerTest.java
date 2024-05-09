@@ -17,7 +17,6 @@ import com.thbs.learningplan.exception.InvalidSheetFormatException;
 import com.thbs.learningplan.exception.NotFoundException;
 import com.thbs.learningplan.exception.TemplateDownloadException;
 
-@SpringBootTest
 class GlobalExceptionHandlerTest {
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;

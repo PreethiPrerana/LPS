@@ -9,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.model.Topic;
 
-@SpringBootTest
 class TopicTest {
     @Test
     void testGettersAndSetters() {

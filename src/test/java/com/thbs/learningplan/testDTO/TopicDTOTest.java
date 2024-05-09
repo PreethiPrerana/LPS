@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.thbs.learningplan.dto.TopicDTO;
 
-@SpringBootTest
 class TopicDTOTest {
     @Test
     void testGetterAndSetter() {

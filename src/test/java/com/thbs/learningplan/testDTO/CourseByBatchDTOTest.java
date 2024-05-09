@@ -10,7 +10,7 @@ import com.thbs.learningplan.dto.CourseDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
+
 class CourseByBatchDTOTest {
 
     @Test

@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.thbs.learningplan.dto.CourseDTO;
 import com.thbs.learningplan.dto.TopicDTO;
 
-@SpringBootTest
 class CourseDTOTest {
 
     @Test

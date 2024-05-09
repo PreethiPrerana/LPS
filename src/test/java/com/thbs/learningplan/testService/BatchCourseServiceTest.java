@@ -13,8 +13,10 @@ import com.thbs.learningplan.service.BatchCourseService;
 import com.thbs.learningplan.service.CourseService;
 import com.thbs.learningplan.service.TopicService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
@@ -25,7 +27,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class BatchCourseServiceTest {
 
     @Mock

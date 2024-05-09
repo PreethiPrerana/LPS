@@ -10,7 +10,6 @@ import com.thbs.learningplan.dto.PlanDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
 class PlanDTOTest {
 
     @Test
