@@ -2,6 +2,7 @@ package com.thbs.learningplan.testDTO;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.thbs.learningplan.dto.CourseByBatchDTO;
 import com.thbs.learningplan.dto.CourseDTO;
@@ -9,10 +10,11 @@ import com.thbs.learningplan.dto.CourseDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseByBatchDTOTest {
+@SpringBootTest
+class CourseByBatchDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         // Arrange
         CourseByBatchDTO courseByBatchDTO = new CourseByBatchDTO();
         Long batchId = 1L;
@@ -28,7 +30,7 @@ public class CourseByBatchDTOTest {
     }
 
     @Test
-    public void testAllArgsConstructor() {
+    void testAllArgsConstructor() {
         // Arrange
         Long batchId = 1L;
         List<CourseDTO> courses = new ArrayList<>();
@@ -42,7 +44,7 @@ public class CourseByBatchDTOTest {
     }
 
     @Test
-    public void testNoArgsConstructor() {
+    void testNoArgsConstructor() {
         // Arrange & Act
         CourseByBatchDTO courseByBatchDTO = new CourseByBatchDTO();
 

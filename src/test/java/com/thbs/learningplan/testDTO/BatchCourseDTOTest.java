@@ -2,6 +2,7 @@ package com.thbs.learningplan.testDTO;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.thbs.learningplan.dto.BatchCourseDTO;
 import com.thbs.learningplan.dto.TopicDTO;
@@ -10,10 +11,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BatchCourseDTOTest {
+@SpringBootTest
+class BatchCourseDTOTest {
 
     @Test
-    public void testGetterAndSetter() {
+    void testGetterAndSetter() {
         // Arrange
         BatchCourseDTO batchCourseDTO = new BatchCourseDTO();
         Date startDate = new Date();
@@ -41,7 +43,7 @@ public class BatchCourseDTOTest {
     }
 
     @Test
-    public void testAllArgsConstructor() {
+    void testAllArgsConstructor() {
         // Arrange
         Date startDate = new Date();
         Date endDate = new Date();
@@ -63,7 +65,7 @@ public class BatchCourseDTOTest {
     }
 
     @Test
-    public void testNoArgsConstructor() {
+    void testNoArgsConstructor() {
         // Arrange & Act
         BatchCourseDTO batchCourseDTO = new BatchCourseDTO();
 
@@ -76,6 +78,3 @@ public class BatchCourseDTOTest {
         Assertions.assertNull(batchCourseDTO.getTopic());
     }
 }
-
-    
-

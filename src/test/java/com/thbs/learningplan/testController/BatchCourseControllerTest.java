@@ -8,10 +8,9 @@ import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.service.BatchCourseService;
 import com.thbs.learningplan.utility.DateRange;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -21,8 +20,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class BatchCourseControllerTest {
+@SpringBootTest
+class BatchCourseControllerTest {
 
     @Mock
     private BatchCourseService batchCourseService;
@@ -31,7 +30,7 @@ public class BatchCourseControllerTest {
     private BatchCourseController batchCourseController;
 
     @Test
-    public void testAddBatchCourse() {
+    void testAddBatchCourse() {
         BatchCourse batchCourse = new BatchCourse();
         when(batchCourseService.addBatchCourse(batchCourse)).thenReturn(batchCourse);
 
@@ -42,7 +41,7 @@ public class BatchCourseControllerTest {
     }
 
     @Test
-    public void testAddMultipleBatchCourses() {
+    void testAddMultipleBatchCourses() {
         List<BatchCourse> batchCourses = Arrays.asList(new BatchCourse(), new BatchCourse());
         when(batchCourseService.addMultipleBatchCourses(batchCourses)).thenReturn(batchCourses);
 
@@ -53,7 +52,7 @@ public class BatchCourseControllerTest {
     }
 
     @Test
-    public void testGetAllBatchCourses() {
+    void testGetAllBatchCourses() {
         List<BatchCourse> batchCourses = Arrays.asList(new BatchCourse(), new BatchCourse());
         when(batchCourseService.getAllBatchCourses()).thenReturn(batchCourses);
 
@@ -64,7 +63,7 @@ public class BatchCourseControllerTest {
     }
 
     @Test
-    public void testGetBatchCourseDTO() {
+    void testGetBatchCourseDTO() {
         Long batchId = 1L;
         CourseByBatchDTO dto = new CourseByBatchDTO();
         when(batchCourseService.convertToDTO(batchId)).thenReturn(dto);
@@ -76,7 +75,7 @@ public class BatchCourseControllerTest {
     }
 
     @Test
-    public void testGetPlanDTO() {
+    void testGetPlanDTO() {
         Long batchId = 1L;
         PlanDTO dto = new PlanDTO();
         when(batchCourseService.generatePlanDTO(batchId)).thenReturn(dto);
@@ -88,7 +87,7 @@ public class BatchCourseControllerTest {
     }
 
     @Test
-    public void testUpdateTrainer() {
+    void testUpdateTrainer() {
         BatchCourseId batchCourseId = new BatchCourseId();
         String trainer = "John Doe";
         ResponseEntity<String> responseEntity = batchCourseController.updateTrainer(batchCourseId, trainer);
@@ -99,7 +98,7 @@ public class BatchCourseControllerTest {
     }
 
     @Test
-    public void testUpdateDates() {
+    void testUpdateDates() {
         DateRange dateRange = new DateRange();
         ResponseEntity<String> responseEntity = batchCourseController.updateDates(dateRange);
 
@@ -109,7 +108,7 @@ public class BatchCourseControllerTest {
     }
 
     @Test
-    public void testDeleteBatchCourse() {
+    void testDeleteBatchCourse() {
         BatchCourseId batchCourseId = new BatchCourseId();
         ResponseEntity<String> responseEntity = batchCourseController.deleteBatchCourse(batchCourseId);
 
@@ -118,4 +117,3 @@ public class BatchCourseControllerTest {
         verify(batchCourseService, times(1)).deleteBatchCourse(batchCourseId);
     }
 }
-

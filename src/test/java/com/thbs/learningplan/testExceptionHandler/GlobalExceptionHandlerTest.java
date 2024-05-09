@@ -6,12 +6,9 @@ import static org.mockito.Mockito.when;
 
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import com.thbs.learningplan.exception.DuplicateEntryException;
 import com.thbs.learningplan.exception.ErrorResponse;
 import com.thbs.learningplan.exception.GlobalExceptionHandler;
@@ -19,8 +16,6 @@ import com.thbs.learningplan.exception.InvalidDataException;
 import com.thbs.learningplan.exception.InvalidSheetFormatException;
 import com.thbs.learningplan.exception.NotFoundException;
 import com.thbs.learningplan.exception.TemplateDownloadException;
-
-@ExtendWith(SpringExtension.class)
 
 @SpringBootTest
 class GlobalExceptionHandlerTest {
