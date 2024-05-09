@@ -46,7 +46,7 @@ public class CourseController {
      */
     @Autowired
     public CourseController(CourseService courseService, BulkUploadService bulkUploadService,
-            /*ResourceLoader resourceLoader*/ ExcelDownloadService excelDownloadService) {
+                            ExcelDownloadService excelDownloadService) {
         this.courseService = courseService;
         this.bulkUploadService = bulkUploadService;
         this.excelDownloadService = excelDownloadService;
@@ -77,24 +77,9 @@ public class CourseController {
     }
 
     /**
-     * Handles the download functionality of an Excel file.
+     * Handles the download functionality of an Excel file template.
      *
-     * This method serves the purpose of downloading an Excel file by providing it
-     * as a response to a GET request.
-     * It loads the Excel file named "template.xlsx" from the classpath and sets the
-     * necessary response headers for
-     * file download. If the file is successfully loaded, it returns a
-     * ResponseEntity containing the file content
-     * as the response body along with appropriate headers indicating the file type
-     * and attachment disposition.
-     * If an error occurs during the file loading process, it returns a
-     * ResponseEntity with an INTERNAL_SERVER_ERROR
-     * status indicating the failure.
-     *
-     * @return a ResponseEntity<Resource> representing the response entity
-     *         containing the Excel file as the response
-     *         body along with appropriate headers, or an INTERNAL_SERVER_ERROR
-     *         response entity if an error occurs.
+     * @return ResponseEntity containing the Excel template file as a Resource.
      */
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadExcelFile() {
