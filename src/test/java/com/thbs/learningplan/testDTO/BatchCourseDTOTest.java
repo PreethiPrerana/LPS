@@ -2,8 +2,6 @@ package com.thbs.learningplan.testDTO;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import com.thbs.learningplan.dto.BatchCourseDTO;
 import com.thbs.learningplan.dto.TopicDTO;
 
@@ -50,17 +48,19 @@ class BatchCourseDTOTest {
         String courseName = "Java Programming";
         Long courseId = 1L;
         List<TopicDTO> topics = new ArrayList<>();
-
+        Long trainerId=1L;
         // Act
-        BatchCourseDTO batchCourseDTO = new BatchCourseDTO(startDate, endDate, trainer, courseName, courseId, topics);
+        BatchCourseDTO batchCourseDTO = new BatchCourseDTO(startDate, endDate, trainerId, trainer, courseName, courseId, topics);
 
         // Assert
         Assertions.assertEquals(startDate, batchCourseDTO.getStartDate());
         Assertions.assertEquals(endDate, batchCourseDTO.getEndDate());
         Assertions.assertEquals(trainer, batchCourseDTO.getTrainer());
+        Assertions.assertEquals(trainerId, batchCourseDTO.getTrainerId());
         Assertions.assertEquals(courseName, batchCourseDTO.getCourseName());
         Assertions.assertEquals(courseId, batchCourseDTO.getCourseId());
         Assertions.assertEquals(topics, batchCourseDTO.getTopic());
+
     }
 
     @Test

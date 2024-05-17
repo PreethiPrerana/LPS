@@ -8,6 +8,7 @@ import com.thbs.learningplan.dto.CourseByBatchDTO;
 import com.thbs.learningplan.dto.CourseDTO;
 import com.thbs.learningplan.dto.PlanDTO;
 import com.thbs.learningplan.dto.TopicDTO;
+import com.thbs.learningplan.dto.TrainerBatchCourseDTO;
 import com.thbs.learningplan.exception.InvalidDataException;
 import com.thbs.learningplan.exception.NotFoundException;
 import com.thbs.learningplan.model.BatchCourse;
@@ -115,6 +116,27 @@ public class BatchCourseService {
     }
 
     /**
+     * Retrieves all batch courses related to a specific trainer ID and converts them to DTOs.
+     *
+     * @param trainerId The ID of the trainer.
+     * @return A list of {@code TrainerBatchCourseDTO} containing the batch courses associated with the trainer.
+     */
+    public List<TrainerBatchCourseDTO> getBatchCoursesByTrainerId(Long trainerId) {
+        List<BatchCourse> batchCourses = batchCourseRepository.findByTrainerId(trainerId);
+
+        return batchCourses.stream()
+                .map(batchCourse -> new TrainerBatchCourseDTO(
+                        batchCourse.getBatchCourseId().getBatchId(),
+                        batchCourse.getTrainerId(),
+                        batchCourse.getTrainer(),
+                        batchCourse.getBatchCourseId().getCourse().getCourseId(), // Assuming BatchCourseId contains courseId
+                        batchCourse.getBatchCourseId().getCourse().getCourseName(), // Replace with actual course name retrieval logic
+                        batchCourse.getStartDate(),
+                        batchCourse.getEndDate()
+                ))
+                .collect(Collectors.toList());
+    }
+    /**
      * Generates plan DTO based on batch ID.
      * 
      * @param batchId The batch ID.
@@ -143,6 +165,7 @@ public class BatchCourseService {
             batchCourseDTO.setStartDate(batchCourse.getStartDate());
             batchCourseDTO.setEndDate(batchCourse.getEndDate());
             batchCourseDTO.setTrainer(batchCourse.getTrainer());
+            batchCourseDTO.setTrainerId(batchCourse.getTrainerId());
 
             // Set courseName and courseId
             Course course = batchCourse.getBatchCourseId().getCourse();
@@ -184,7 +207,7 @@ public class BatchCourseService {
      * @throws InvalidDataException if the trainer name is null or empty.
      * @throws NotFoundException   if the batch course is not found.
      */
-    public BatchCourse updateTrainer(BatchCourseId batchCourseId, String trainer) {
+    public BatchCourse updateTrainer(BatchCourseId batchCourseId, Long trainerId, String trainer) {
         if (trainer == null || trainer.isEmpty())
             throw new InvalidDataException("Trainer cannot be null or empty");
         Optional<BatchCourse> optionalBatchCourse = batchCourseRepository.findById(batchCourseId);
@@ -193,6 +216,7 @@ public class BatchCourseService {
         }
         BatchCourse batchCourse = optionalBatchCourse.get();
         batchCourse.setTrainer(trainer);
+        batchCourse.setTrainerId(trainerId);
         return batchCourseRepository.save(batchCourse);
     }
 

@@ -35,6 +35,11 @@ public class BatchCourseDTO {
     private Date endDate;
 
     /**
+     * The ID of the trainer.
+     */
+    private Long trainerId;
+
+    /**
      * The trainer assigned to the batch course.
      */
     private String trainer;

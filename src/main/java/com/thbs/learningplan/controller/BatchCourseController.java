@@ -2,6 +2,7 @@ package com.thbs.learningplan.controller;
 
 import com.thbs.learningplan.dto.CourseByBatchDTO;
 import com.thbs.learningplan.dto.PlanDTO;
+import com.thbs.learningplan.dto.TrainerBatchCourseDTO;
 import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.service.BatchCourseService;
@@ -73,6 +74,19 @@ public class BatchCourseController {
     }
 
     /**
+     * Retrieves all batch courses associated with a specific trainer ID.
+     *
+     * @param trainerId The ID of the trainer.
+     * @return A list of {@code TrainerBatchCourseDTO} containing the batch courses
+     *         associated with the trainer.
+     */
+    @GetMapping("/trainer/{trainerId}")
+    public ResponseEntity<List<TrainerBatchCourseDTO>> getBatchCoursesByTrainerId(@PathVariable Long trainerId) {
+        List<TrainerBatchCourseDTO> batchCourses = batchCourseService.getBatchCoursesByTrainerId(trainerId);
+        return ResponseEntity.ok().body(batchCourses);
+    }
+
+    /**
      * Endpoint for retrieving batch course DTO by batch ID.
      *
      * @param batchId the ID of the batch
@@ -105,8 +119,8 @@ public class BatchCourseController {
      */
     @PutMapping("/trainer")
     public ResponseEntity<String> updateTrainer(@RequestBody BatchCourseId batchCourseId,
-            @RequestParam String trainer) {
-        batchCourseService.updateTrainer(batchCourseId, trainer);
+            @RequestParam String trainer, @RequestParam Long trainerId) {
+        batchCourseService.updateTrainer(batchCourseId, trainerId, trainer);
         return ResponseEntity.ok().body("Trainer updated successfully");
 
     }

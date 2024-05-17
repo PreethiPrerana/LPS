@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.Date;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.model.Course;
@@ -60,13 +58,16 @@ class BatchCourseTest {
         Date startDate = new Date();
         Date endDate = new Date();
         String trainer = "Test Trainer";
+        Long trainerId=1L;
 
-        BatchCourse batchCourse = new BatchCourse(batchCourseId, startDate, endDate, trainer);
+        BatchCourse batchCourse = new BatchCourse(batchCourseId, startDate, endDate,trainerId, trainer);
 
         // Test getters
         assertEquals(batchCourseId, batchCourse.getBatchCourseId());
         assertEquals(startDate, batchCourse.getStartDate());
         assertEquals(endDate, batchCourse.getEndDate());
         assertEquals(trainer, batchCourse.getTrainer());
+        assertEquals(trainerId, batchCourse.getTrainerId());
+
     }
 }

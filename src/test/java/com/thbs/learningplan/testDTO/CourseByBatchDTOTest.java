@@ -2,8 +2,6 @@ package com.thbs.learningplan.testDTO;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import com.thbs.learningplan.dto.CourseByBatchDTO;
 import com.thbs.learningplan.dto.CourseDTO;
 

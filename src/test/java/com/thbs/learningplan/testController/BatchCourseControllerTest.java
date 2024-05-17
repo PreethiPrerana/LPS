@@ -91,11 +91,12 @@ class BatchCourseControllerTest {
     void testUpdateTrainer() {
         BatchCourseId batchCourseId = new BatchCourseId();
         String trainer = "John Doe";
-        ResponseEntity<String> responseEntity = batchCourseController.updateTrainer(batchCourseId, trainer);
+        Long trainerId=1L;
+        ResponseEntity<String> responseEntity = batchCourseController.updateTrainer(batchCourseId, trainer,trainerId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Trainer updated successfully", responseEntity.getBody());
-        verify(batchCourseService, times(1)).updateTrainer(batchCourseId, trainer);
+        verify(batchCourseService, times(1)).updateTrainer(batchCourseId,trainerId,trainer);
     }
 
     @Test

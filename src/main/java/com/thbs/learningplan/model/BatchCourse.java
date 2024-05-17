@@ -38,6 +38,8 @@ public class BatchCourse {
      */
     @Temporal(TemporalType.DATE)
     private Date endDate;
+
+    private Long trainerId;
     
     /**
      * The trainer assigned to conduct the batch course.

@@ -39,4 +39,11 @@ public interface BatchCourseRepository extends JpaRepository<BatchCourse, BatchC
      */
     List<BatchCourse> findByBatchCourseIdBatchId(Long batchId);
 
+    /**
+     * Retrieves a list of batch courses associated with a specific trainer ID.
+     *
+     * @param trainerId The ID of the trainer.
+     * @return A list of batch courses associated with the specified trainer ID.
+     */
+    List<BatchCourse> findByTrainerId(Long trainerId);
 }

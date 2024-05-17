@@ -17,8 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -160,11 +158,12 @@ class BatchCourseServiceTest {
         BatchCourseId batchCourseId = new BatchCourseId();
         BatchCourse batchCourse = new BatchCourse();
         batchCourse.setTrainer("Old Trainer");
+        batchCourse.setTrainerId(1L);
 
         when(batchCourseRepository.findById(batchCourseId)).thenReturn(Optional.of(batchCourse));
         when(batchCourseRepository.save(batchCourse)).thenReturn(batchCourse);
 
-        BatchCourse result = batchCourseService.updateTrainer(batchCourseId, "New Trainer");
+        BatchCourse result = batchCourseService.updateTrainer(batchCourseId, 2L,"New Trainer");
 
         assertNotNull(result);
         assertEquals("New Trainer", result.getTrainer());
@@ -176,15 +175,15 @@ class BatchCourseServiceTest {
 
         when(batchCourseRepository.findById(batchCourseId)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> batchCourseService.updateTrainer(batchCourseId, "Trainer"));
+        assertThrows(NotFoundException.class, () -> batchCourseService.updateTrainer(batchCourseId, 1L, "Trainer"));
     }
 
     @Test
     void testUpdateTrainer_InvalidDataException() {
         BatchCourseId batchCourseId = new BatchCourseId();
 
-        assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, null));
-        assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, ""));
+        assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, null, null));
+        assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, 1L, ""));
     }
 
     @Test

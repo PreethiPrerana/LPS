@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import com.thbs.learningplan.exception.DuplicateEntryException;
 import com.thbs.learningplan.exception.ErrorResponse;
