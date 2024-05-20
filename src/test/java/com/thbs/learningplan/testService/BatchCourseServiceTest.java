@@ -1,5 +1,6 @@
 package com.thbs.learningplan.testService;
 
+import com.thbs.learningplan.dto.TrainerBatchCourseDTO;
 import com.thbs.learningplan.exception.InvalidDataException;
 import com.thbs.learningplan.exception.NotFoundException;
 import com.thbs.learningplan.model.BatchCourse;
@@ -12,6 +13,8 @@ import com.thbs.learningplan.repository.LearningPlanRepository;
 import com.thbs.learningplan.service.BatchCourseService;
 import com.thbs.learningplan.service.CourseService;
 import com.thbs.learningplan.service.TopicService;
+import com.thbs.learningplan.utility.DateRange;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -126,6 +129,83 @@ class BatchCourseServiceTest {
         assertThrows(NotFoundException.class, () -> batchCourseService.addBatchCourse(batchCourse));
     }
 
+    // @Test
+    // void testAddMultipleBatchCourses_Success() {
+    // // Prepare data
+    // LearningPlan learningPlan = new LearningPlan(1L, null, null, null);
+    // learningPlan.setCourses(Arrays.asList(createSampleCourse())); // Assuming the
+    // course is linked to the learning
+
+    // Course course = new Course(1L, null, null);
+
+    // BatchCourseId batchCourseId = new BatchCourseId(1L, learningPlan, course);
+    // batchCourseId.setCourse(course); // Set the Course object in BatchCourseId
+
+    // BatchCourse batchCourse1 = new BatchCourse();
+    // batchCourse1.setBatchCourseId(batchCourseId);
+    // BatchCourse batchCourse2 = new BatchCourse();
+    // batchCourse1.setBatchCourseId(batchCourseId);
+    // List<BatchCourse> batchCourses = Arrays.asList(batchCourse1, batchCourse2);
+
+    // // Mock repository behavior
+    // when(learningPlanRepository.findByLearningPlanId(anyLong())).thenReturn(Optional.of(learningPlan));
+    // when(batchCourseRepository.save(batchCourse1)).thenReturn(batchCourse1);
+    // when(batchCourseRepository.save(batchCourse2)).thenReturn(batchCourse2);
+
+    // // Call the method
+    // List<BatchCourse> result =
+    // batchCourseService.addMultipleBatchCourses(batchCourses);
+
+    // // Verify and assert
+    // assertEquals(2, result.size());
+    // assertEquals(batchCourse1.getBatchCourseId(),
+    // result.get(0).getBatchCourseId());
+    // assertEquals(batchCourse2.getBatchCourseId(),
+    // result.get(1).getBatchCourseId());
+
+    // verify(batchCourseRepository, times(1)).save(batchCourse1);
+    // verify(batchCourseRepository, times(1)).save(batchCourse2);
+    // }
+
+    @Test
+    void testAddMultipleBatchCourses_Success() {
+        // Prepare data
+        LearningPlan learningPlan = new LearningPlan(1L, "Sample Plan", "Type", null);
+        learningPlan.setCourses(Arrays.asList(createSampleCourse())); // Assuming the
+
+        Course course = new Course(1L, "Sample Course", null);
+
+        BatchCourseId batchCourseId1 = new BatchCourseId(1L, learningPlan, course);
+        batchCourseId1.setCourse(course); // Set the Course object in BatchCourseId
+
+        BatchCourseId batchCourseId2 = new BatchCourseId(2L, learningPlan, course);
+        batchCourseId2.setCourse(course); // Set the Course object in BatchCourseId
+
+        BatchCourse batchCourse1 = new BatchCourse();
+        batchCourse1.setBatchCourseId(batchCourseId1);
+
+        BatchCourse batchCourse2 = new BatchCourse();
+        batchCourse2.setBatchCourseId(batchCourseId2);
+
+        List<BatchCourse> batchCourses = Arrays.asList(batchCourse1, batchCourse2);
+
+        // Mock repository behavior
+        when(learningPlanRepository.findByLearningPlanId(anyLong())).thenReturn(Optional.of(learningPlan));
+        when(batchCourseRepository.save(batchCourse1)).thenReturn(batchCourse1);
+        when(batchCourseRepository.save(batchCourse2)).thenReturn(batchCourse2);
+
+        // Call the method
+        List<BatchCourse> result = batchCourseService.addMultipleBatchCourses(batchCourses);
+
+        // Verify and assert
+        assertEquals(2, result.size());
+        assertEquals(batchCourse1.getBatchCourseId(), result.get(0).getBatchCourseId());
+        assertEquals(batchCourse2.getBatchCourseId(), result.get(1).getBatchCourseId());
+
+        verify(batchCourseRepository, times(1)).save(batchCourse1);
+        verify(batchCourseRepository, times(1)).save(batchCourse2);
+    }
+
     @Test
     void testGetAllBatchCourses() {
         // Prepare data
@@ -154,6 +234,64 @@ class BatchCourseServiceTest {
     }
 
     @Test
+    void testGetBatchCoursesByTrainerId_Success() {
+        // Prepare data
+        Long trainerId = 1L;
+        Long batchId = 1L;
+        Long courseId = 1L;
+        String courseName = "Sample Course";
+        String trainerName = "Sample Trainer";
+
+        LearningPlan learningPlan = new LearningPlan(1L, "Sample Plan", "Type", null);
+        Course course = new Course(courseId, courseName, null);
+
+        BatchCourseId batchCourseId = new BatchCourseId(batchId, learningPlan, course);
+
+        BatchCourse batchCourse1 = new BatchCourse();
+        batchCourse1.setBatchCourseId(batchCourseId);
+        batchCourse1.setTrainerId(trainerId);
+        batchCourse1.setTrainer(trainerName);
+        batchCourse1.setStartDate(new Date());
+        batchCourse1.setEndDate(new Date());
+
+        BatchCourse batchCourse2 = new BatchCourse();
+        batchCourse2.setBatchCourseId(batchCourseId);
+        batchCourse2.setTrainerId(trainerId);
+        batchCourse2.setTrainer(trainerName);
+        batchCourse2.setStartDate(new Date());
+        batchCourse2.setEndDate(new Date());
+
+        List<BatchCourse> batchCourses = Arrays.asList(batchCourse1, batchCourse2);
+
+        // Mock repository behavior
+        when(batchCourseRepository.findByTrainerId(trainerId)).thenReturn(batchCourses);
+
+        // Call the method
+        List<TrainerBatchCourseDTO> result = batchCourseService.getBatchCoursesByTrainerId(trainerId);
+
+        // Verify and assert
+        assertEquals(2, result.size());
+
+        TrainerBatchCourseDTO dto1 = result.get(0);
+        assertEquals(batchId, dto1.getBatchId());
+        assertEquals(trainerId, dto1.getTrainerId());
+        assertEquals(trainerName, dto1.getTrainer());
+        assertEquals(courseId, dto1.getCourseId());
+        assertEquals(courseName, dto1.getCourseName());
+        assertNotNull(dto1.getStartDate());
+        assertNotNull(dto1.getEndDate());
+
+        TrainerBatchCourseDTO dto2 = result.get(1);
+        assertEquals(batchId, dto2.getBatchId());
+        assertEquals(trainerId, dto2.getTrainerId());
+        assertEquals(trainerName, dto2.getTrainer());
+        assertEquals(courseId, dto2.getCourseId());
+        assertEquals(courseName, dto2.getCourseName());
+        assertNotNull(dto1.getStartDate());
+        assertNotNull(dto1.getEndDate());
+    }
+
+    @Test
     void testUpdateTrainer_Success() {
         BatchCourseId batchCourseId = new BatchCourseId();
         BatchCourse batchCourse = new BatchCourse();
@@ -163,7 +301,7 @@ class BatchCourseServiceTest {
         when(batchCourseRepository.findById(batchCourseId)).thenReturn(Optional.of(batchCourse));
         when(batchCourseRepository.save(batchCourse)).thenReturn(batchCourse);
 
-        BatchCourse result = batchCourseService.updateTrainer(batchCourseId, 2L,"New Trainer");
+        BatchCourse result = batchCourseService.updateTrainer(batchCourseId, 2L, "New Trainer");
 
         assertNotNull(result);
         assertEquals("New Trainer", result.getTrainer());
@@ -184,6 +322,67 @@ class BatchCourseServiceTest {
 
         assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, null, null));
         assertThrows(InvalidDataException.class, () -> batchCourseService.updateTrainer(batchCourseId, 1L, ""));
+    }
+
+    @Test
+    void testUpdateDates_Success() {
+        // Prepare data
+        LearningPlan learningPlan = new LearningPlan(2L, null, null, null);
+        Course course = new Course(3L, null, null);
+        BatchCourseId batchCourseId = new BatchCourseId(1L, learningPlan, course);
+        Date startDate = new Date();
+        Date endDate = new Date();
+        DateRange dateRange = new DateRange();
+        dateRange.setBatchCourseId(batchCourseId);
+        dateRange.setStartDate(startDate);
+        dateRange.setEndDate(endDate);
+
+        BatchCourse batchCourse = new BatchCourse();
+        batchCourse.setBatchCourseId(batchCourseId);
+        batchCourse.setStartDate(new Date()); // Set some initial date
+        batchCourse.setEndDate(new Date()); // Set some initial date
+
+        // Mock repository behavior
+        when(batchCourseRepository.findById(batchCourseId)).thenReturn(Optional.of(batchCourse));
+        when(batchCourseRepository.save(batchCourse)).thenReturn(batchCourse);
+
+        // Call the method
+        BatchCourse result = batchCourseService.updateDates(dateRange);
+
+        // Verify and assert
+        assertNotNull(result);
+        assertEquals(startDate, result.getStartDate());
+        assertEquals(endDate, result.getEndDate());
+
+        verify(batchCourseRepository, times(1)).findById(batchCourseId);
+        verify(batchCourseRepository, times(1)).save(batchCourse);
+    }
+
+    @Test
+    void testUpdateDates_NotFound() {
+        // Prepare data
+        LearningPlan learningPlan = new LearningPlan(2L, null, null, null);
+        Course course = new Course(3L, null, null);
+        BatchCourseId batchCourseId = new BatchCourseId(1L, learningPlan, course);
+        Date startDate = new Date();
+        Date endDate = new Date();
+        DateRange dateRange = new DateRange();
+        dateRange.setBatchCourseId(batchCourseId);
+        dateRange.setStartDate(startDate);
+        dateRange.setEndDate(endDate);
+
+        // Mock repository behavior
+        when(batchCourseRepository.findById(batchCourseId)).thenReturn(Optional.empty());
+
+        // Call the method and assert exception
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            batchCourseService.updateDates(dateRange);
+        });
+
+        assertEquals("BatchCourse not found.", exception.getMessage());
+
+        verify(batchCourseRepository, times(1)).findById(batchCourseId);
+        verify(batchCourseRepository, never()).save(any(BatchCourse.class));
     }
 
     @Test

@@ -21,11 +21,13 @@ class BatchCourseDTOTest {
         String courseName = "Java Programming";
         Long courseId = 1L;
         List<TopicDTO> topics = new ArrayList<>();
+        Long trainerId=1L;
 
         // Act
         batchCourseDTO.setStartDate(startDate);
         batchCourseDTO.setEndDate(endDate);
         batchCourseDTO.setTrainer(trainer);
+        batchCourseDTO.setTrainerId(trainerId);
         batchCourseDTO.setCourseName(courseName);
         batchCourseDTO.setCourseId(courseId);
         batchCourseDTO.setTopic(topics);
@@ -34,6 +36,7 @@ class BatchCourseDTOTest {
         Assertions.assertEquals(startDate, batchCourseDTO.getStartDate());
         Assertions.assertEquals(endDate, batchCourseDTO.getEndDate());
         Assertions.assertEquals(trainer, batchCourseDTO.getTrainer());
+        Assertions.assertEquals(trainerId, batchCourseDTO.getTrainerId());
         Assertions.assertEquals(courseName, batchCourseDTO.getCourseName());
         Assertions.assertEquals(courseId, batchCourseDTO.getCourseId());
         Assertions.assertEquals(topics, batchCourseDTO.getTopic());
@@ -71,6 +74,7 @@ class BatchCourseDTOTest {
         // Assert
         Assertions.assertNull(batchCourseDTO.getStartDate());
         Assertions.assertNull(batchCourseDTO.getEndDate());
+        Assertions.assertNull(batchCourseDTO.getTrainerId());
         Assertions.assertNull(batchCourseDTO.getTrainer());
         Assertions.assertNull(batchCourseDTO.getCourseName());
         Assertions.assertNull(batchCourseDTO.getCourseId());

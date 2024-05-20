@@ -42,12 +42,13 @@ public class BatchCourseService {
         this.topicService = topicService;
     }
 
-     /**
+    /**
      * Adds a new batch course.
      * 
      * @param batchCourse The batch course to add.
      * @return The added batch course.
-     * @throws NotFoundException if the associated learning plan or course is not found.
+     * @throws NotFoundException if the associated learning plan or course is not
+     *                           found.
      */
     public BatchCourse addBatchCourse(BatchCourse batchCourse) {
         Long courseId = batchCourse.getBatchCourseId().getCourse().getCourseId();
@@ -68,7 +69,6 @@ public class BatchCourseService {
         return batchCourseRepository.save(batchCourse);
     }
 
-
     /**
      * Adds multiple batch courses.
      * 
@@ -83,16 +83,15 @@ public class BatchCourseService {
         return batchCourseList;
     }
 
-     /**
+    /**
      * Retrieves all batch courses.
      * 
      * @return The list of all batch courses.
      */
-    
+
     public List<BatchCourse> getAllBatchCourses() {
         return batchCourseRepository.findAll();
     }
-
 
     /**
      * Converts batch courses to DTO based on batchId.
@@ -116,10 +115,12 @@ public class BatchCourseService {
     }
 
     /**
-     * Retrieves all batch courses related to a specific trainer ID and converts them to DTOs.
+     * Retrieves all batch courses related to a specific trainer ID and converts
+     * them to DTOs.
      *
      * @param trainerId The ID of the trainer.
-     * @return A list of {@code TrainerBatchCourseDTO} containing the batch courses associated with the trainer.
+     * @return A list of {@code TrainerBatchCourseDTO} containing the batch courses
+     *         associated with the trainer.
      */
     public List<TrainerBatchCourseDTO> getBatchCoursesByTrainerId(Long trainerId) {
         List<BatchCourse> batchCourses = batchCourseRepository.findByTrainerId(trainerId);
@@ -129,13 +130,15 @@ public class BatchCourseService {
                         batchCourse.getBatchCourseId().getBatchId(),
                         batchCourse.getTrainerId(),
                         batchCourse.getTrainer(),
-                        batchCourse.getBatchCourseId().getCourse().getCourseId(), // Assuming BatchCourseId contains courseId
-                        batchCourse.getBatchCourseId().getCourse().getCourseName(), // Replace with actual course name retrieval logic
+                        batchCourse.getBatchCourseId().getCourse().getCourseId(), // Assuming BatchCourseId contains
+                                                                                  // courseId
+                        batchCourse.getBatchCourseId().getCourse().getCourseName(), // Replace with actual course name
+                                                                                    // retrieval logic
                         batchCourse.getStartDate(),
-                        batchCourse.getEndDate()
-                ))
+                        batchCourse.getEndDate()))
                 .collect(Collectors.toList());
     }
+
     /**
      * Generates plan DTO based on batch ID.
      * 
@@ -187,7 +190,7 @@ public class BatchCourseService {
         return planDTO;
     }
 
-      /**
+    /**
      * Fetches CourseDTO for the given Course.
      * 
      * @param course The Course entity.
@@ -205,7 +208,7 @@ public class BatchCourseService {
      * @param trainer       The new trainer name.
      * @return The updated batch course.
      * @throws InvalidDataException if the trainer name is null or empty.
-     * @throws NotFoundException   if the batch course is not found.
+     * @throws NotFoundException    if the batch course is not found.
      */
     public BatchCourse updateTrainer(BatchCourseId batchCourseId, Long trainerId, String trainer) {
         if (trainer == null || trainer.isEmpty())
@@ -220,11 +223,11 @@ public class BatchCourseService {
         return batchCourseRepository.save(batchCourse);
     }
 
-
     /**
      * Updates the start and end dates for a batch course.
      * 
-     * @param dateRange The DateRange object containing batch course ID, start date, and end date.
+     * @param dateRange The DateRange object containing batch course ID, start date,
+     *                  and end date.
      * @return The updated batch course.
      * @throws NotFoundException if the batch course is not found.
      */
@@ -238,7 +241,6 @@ public class BatchCourseService {
         batchCourse.setEndDate(dateRange.getEndDate());
         return batchCourseRepository.save(batchCourse);
     }
-
 
     /**
      * Deletes a batch course.

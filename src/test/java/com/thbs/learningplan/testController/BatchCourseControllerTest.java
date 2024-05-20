@@ -3,6 +3,7 @@ package com.thbs.learningplan.testController;
 import com.thbs.learningplan.controller.BatchCourseController;
 import com.thbs.learningplan.dto.CourseByBatchDTO;
 import com.thbs.learningplan.dto.PlanDTO;
+import com.thbs.learningplan.dto.TrainerBatchCourseDTO;
 import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.service.BatchCourseService;
@@ -16,9 +17,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,6 +67,33 @@ class BatchCourseControllerTest {
     }
 
     @Test
+    void testGetBatchCoursesByTrainerId() {
+        // Prepare data
+        Long trainerId = 1L;
+        Long batchId = 1L;
+        Long courseId = 1L;
+        String courseName = "Sample Course";
+        String trainerName = "Sample Trainer";
+
+        TrainerBatchCourseDTO dto1 = new TrainerBatchCourseDTO(
+                batchId, trainerId, trainerName, courseId, courseName, new Date(), new Date());
+        TrainerBatchCourseDTO dto2 = new TrainerBatchCourseDTO(
+                batchId, trainerId, trainerName, courseId, courseName, new Date(), new Date());
+        List<TrainerBatchCourseDTO> batchCourses = Arrays.asList(dto1, dto2);
+
+        // Mock service behavior
+        when(batchCourseService.getBatchCoursesByTrainerId(anyLong())).thenReturn(batchCourses);
+
+        // Call the method
+        ResponseEntity<List<TrainerBatchCourseDTO>> responseEntity = batchCourseController
+                .getBatchCoursesByTrainerId(trainerId);
+
+        // Verify and assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(batchCourses, responseEntity.getBody());
+    }
+
+    @Test
     void testGetBatchCourseDTO() {
         Long batchId = 1L;
         CourseByBatchDTO dto = new CourseByBatchDTO();
@@ -91,12 +121,12 @@ class BatchCourseControllerTest {
     void testUpdateTrainer() {
         BatchCourseId batchCourseId = new BatchCourseId();
         String trainer = "John Doe";
-        Long trainerId=1L;
-        ResponseEntity<String> responseEntity = batchCourseController.updateTrainer(batchCourseId, trainer,trainerId);
+        Long trainerId = 1L;
+        ResponseEntity<String> responseEntity = batchCourseController.updateTrainer(batchCourseId, trainer, trainerId);
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals("Trainer updated successfully", responseEntity.getBody());
-        verify(batchCourseService, times(1)).updateTrainer(batchCourseId,trainerId,trainer);
+        verify(batchCourseService, times(1)).updateTrainer(batchCourseId, trainerId, trainer);
     }
 
     @Test
