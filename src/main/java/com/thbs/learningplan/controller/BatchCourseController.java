@@ -8,6 +8,8 @@ import com.thbs.learningplan.model.BatchCourseId;
 import com.thbs.learningplan.service.BatchCourseService;
 import com.thbs.learningplan.utility.DateRange;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/batch-course")
+@Tag(name = "Batch Course", description = "Operations related to batch course")
 public class BatchCourseController {
 
     private final BatchCourseService batchCourseService;
@@ -44,6 +47,7 @@ public class BatchCourseController {
      * @param batchCourse the batch course to be added
      * @return the added batch course with HTTP status 200 OK
      */
+    @Operation(summary = "Add a single batch course")
     @PostMapping
     public ResponseEntity<BatchCourse> addBatchCourse(@RequestBody BatchCourse batchCourse) {
         BatchCourse addedBatchCourse = batchCourseService.addBatchCourse(batchCourse);
@@ -56,6 +60,7 @@ public class BatchCourseController {
      * @param batchCourses the list of batch courses to be added
      * @return the list of added batch courses with HTTP status 200 OK
      */
+    @Operation(summary = "Add multiple batch courses")
     @PostMapping("/multiple")
     public ResponseEntity<List<BatchCourse>> addMultipleBatchCourses(@RequestBody List<BatchCourse> batchCourses) {
         List<BatchCourse> addedBatchCourses = batchCourseService.addMultipleBatchCourses(batchCourses);
@@ -67,6 +72,7 @@ public class BatchCourseController {
      *
      * @return the list of batch courses with HTTP status 200 OK
      */
+    @Operation(summary = "Retrieve all batch courses")
     @GetMapping
     public ResponseEntity<List<BatchCourse>> getAllBatchCourses() {
         List<BatchCourse> batchCourses = batchCourseService.getAllBatchCourses();
@@ -80,6 +86,7 @@ public class BatchCourseController {
      * @return A list of {@code TrainerBatchCourseDTO} containing the batch courses
      *         associated with the trainer.
      */
+    @Operation(summary = "Retrieve batch courses related to a particular trainer")
     @GetMapping("/trainer/{trainerId}")
     public ResponseEntity<List<TrainerBatchCourseDTO>> getBatchCoursesByTrainerId(@PathVariable Long trainerId) {
         List<TrainerBatchCourseDTO> batchCourses = batchCourseService.getBatchCoursesByTrainerId(trainerId);
@@ -92,6 +99,7 @@ public class BatchCourseController {
      * @param batchId the ID of the batch
      * @return the batch course DTO with HTTP status 200 OK
      */
+    @Operation(summary = "Retrieve batch course DTO by batch ID")
     @GetMapping("/batch/{batchId}")
     public ResponseEntity<CourseByBatchDTO> getBatchCourseDTO(@PathVariable Long batchId) {
         CourseByBatchDTO dto = batchCourseService.convertToDTO(batchId);
@@ -104,6 +112,7 @@ public class BatchCourseController {
      * @param batchId the ID of the batch
      * @return the plan DTO with HTTP status 200 OK
      */
+    @Operation(summary = "Retrieve plan DTO by batch ID")
     @GetMapping("/view-dto/{batchId}")
     public ResponseEntity<PlanDTO> getPlanDTO(@PathVariable Long batchId) {
         PlanDTO dto = batchCourseService.generatePlanDTO(batchId);
@@ -117,6 +126,7 @@ public class BatchCourseController {
      * @param trainer       the new trainer
      * @return a success message with HTTP status 200 OK
      */
+    @Operation(summary = "Update the trainer for a batch course")
     @PutMapping("/trainer")
     public ResponseEntity<String> updateTrainer(@RequestBody BatchCourseId batchCourseId,
             @RequestParam String trainer, @RequestParam Long trainerId) {
@@ -131,6 +141,7 @@ public class BatchCourseController {
      * @param dateRange the date range for the batch course
      * @return a success message with HTTP status 200 OK
      */
+    @Operation(summary = "Update the dates for a batch course")
     @PutMapping("/dates")
     public ResponseEntity<String> updateDates(@RequestBody DateRange dateRange) {
         batchCourseService.updateDates(dateRange);
@@ -144,6 +155,7 @@ public class BatchCourseController {
      * @param batchCourseId the ID of the batch course
      * @return a success message with HTTP status 200 OK
      */
+    @Operation(summary = "Delete a batch course")
     @Transactional
     @DeleteMapping
     public ResponseEntity<String> deleteBatchCourse(@RequestBody BatchCourseId batchCourseId) {

@@ -14,12 +14,16 @@ import com.thbs.learningplan.service.BulkUploadService;
 import com.thbs.learningplan.service.CourseService;
 import com.thbs.learningplan.service.ExcelDownloadService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * The {@code CourseController} class handles HTTP requests related to courses.
  * It provides endpoints for adding, retrieving, updating, and deleting courses.
  */
 @RestController
 @RequestMapping("/course")
+@Tag(name = "Course", description = "Operations related to courses")
 public class CourseController {
 
     /**
@@ -32,7 +36,7 @@ public class CourseController {
      */
     private final BulkUploadService bulkUploadService;
 
-     /**
+    /**
      * The service responsible for downloading bulk upload file template.
      */
     private final ExcelDownloadService excelDownloadService;
@@ -46,7 +50,7 @@ public class CourseController {
      */
     @Autowired
     public CourseController(CourseService courseService, BulkUploadService bulkUploadService,
-                            ExcelDownloadService excelDownloadService) {
+            ExcelDownloadService excelDownloadService) {
         this.courseService = courseService;
         this.bulkUploadService = bulkUploadService;
         this.excelDownloadService = excelDownloadService;
@@ -58,6 +62,7 @@ public class CourseController {
      * @param course the course to add
      * @return a response entity containing the added course
      */
+    @Operation(summary = "Add a single course")
     @PostMapping
     public ResponseEntity<Course> addCourse(@RequestBody Course course) {
         Course addedCourse = courseService.saveCourse(course);
@@ -70,6 +75,7 @@ public class CourseController {
      * @param file the file to upload
      * @return a response entity indicating the success of the upload operation
      */
+    @Operation(summary = "Handle bulk upload functionality")
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
         bulkUploadService.uploadFile(file);
@@ -81,6 +87,7 @@ public class CourseController {
      *
      * @return ResponseEntity containing the Excel template file as a Resource.
      */
+    @Operation(summary = "Download an Excel file template")
     @GetMapping("/download")
     public ResponseEntity<Resource> downloadExcelFile() {
         return excelDownloadService.downloadTemplate();
@@ -91,6 +98,7 @@ public class CourseController {
      *
      * @return a response entity containing a list of all courses
      */
+    @Operation(summary = "Retrieve all courses")
     @GetMapping
     public ResponseEntity<List<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
@@ -103,6 +111,7 @@ public class CourseController {
      * @param courseId the ID of the course to retrieve
      * @return a response entity containing the course with the specified ID
      */
+    @Operation(summary = "Retrieve a course by its ID")
     @GetMapping("/id/{courseId}")
     public ResponseEntity<Course> getCourseById(@PathVariable Long courseId) {
         Course course = courseService.getCourseById(courseId);
@@ -115,6 +124,7 @@ public class CourseController {
      * @param level the level of courses to retrieve
      * @return a response entity containing a list of courses at the specified level
      */
+    @Operation(summary = "Retrieve courses by level")
     @GetMapping("/level/{level}")
     public ResponseEntity<List<Course>> getCoursesByLevel(@PathVariable String level) {
         List<Course> courses = courseService.getCoursesByLevel(level);
@@ -126,6 +136,7 @@ public class CourseController {
      *
      * @return a response entity containing a list of all course DTOs
      */
+    @Operation(summary = "Retrieve all course DTOs")
     @GetMapping("/dto")
     public ResponseEntity<List<CourseDTO>> getAllCourseDTOs() {
         List<CourseDTO> courseDTOs = courseService.getAllCourseDTOs();
@@ -139,6 +150,7 @@ public class CourseController {
      * @param newCourseName the new name of the course
      * @return a response entity containing the updated course
      */
+    @Operation(summary = "Update the name of a course")
     @PatchMapping("/name/{courseId}")
     public ResponseEntity<Course> updateCourseName(@PathVariable Long courseId, @RequestBody String newCourseName) {
         Course updatedCourse = courseService.updateCourseName(courseId, newCourseName);
@@ -151,6 +163,7 @@ public class CourseController {
      * @param courseId the ID of the course to delete
      * @return a response entity indicating the success of the deletion operation
      */
+    @Operation(summary = "Delete a course by its ID")
     @DeleteMapping("/{courseId}")
     public ResponseEntity<String> deleteCourse(@PathVariable Long courseId) {
         courseService.deleteCourseById(courseId);
@@ -163,6 +176,7 @@ public class CourseController {
      * @param courses the list of courses to delete
      * @return a response entity indicating the success of the deletion operation
      */
+    @Operation(summary = "Delete multiple courses")
     @DeleteMapping("/multiple")
     public ResponseEntity<String> deleteCourses(@RequestBody List<Course> courses) {
         courseService.deleteMultipleCourses(courses);
