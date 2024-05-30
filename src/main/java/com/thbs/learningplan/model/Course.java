@@ -41,4 +41,6 @@ public class Course {
      * The level of the course.
      */
     private String level;
+
+    private Long courseDuration;
 }
