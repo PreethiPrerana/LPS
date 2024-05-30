@@ -19,7 +19,7 @@ import org.hibernate.annotations.Parameter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "course")
+@Table(name = "Course")
 public class Course {
     /**
      * The unique identifier for the course.
@@ -41,6 +41,4 @@ public class Course {
      * The level of the course.
      */
     private String level;
-
-    private Long courseDuration;
 }
