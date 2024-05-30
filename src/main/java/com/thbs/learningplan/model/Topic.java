@@ -21,7 +21,7 @@ import org.hibernate.annotations.Parameter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Topic")
+@Table(name = "topic")
 public class Topic {
     /**
      * The unique identifier for the topic.
@@ -39,11 +39,14 @@ public class Topic {
      */
     private String topicName;
 
-    /**
-     * The description of the topic, stored as TEXT (Subtopics can be specified here)
-     */
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    // /**
+    // * The description of the topic, stored as TEXT (Subtopics can be specified
+    // * here)
+    // */
+    // @Column(columnDefinition = "TEXT")
+    // private String description;
+
+    private Long topicDuration;
 
     /**
      * The course associated with the topic.
