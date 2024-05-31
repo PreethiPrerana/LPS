@@ -16,6 +16,8 @@ import lombok.Setter;
 public class SubTopic {
     private Long subTopicId;
 
+    private String subTopicName;
+
     @ManyToOne
     @JoinColumn(name = "topicId")
     private Topic topic;
