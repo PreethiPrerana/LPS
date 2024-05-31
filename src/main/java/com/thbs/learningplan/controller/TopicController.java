@@ -125,19 +125,21 @@ public class TopicController {
         return ResponseEntity.ok().body(result);
     }
 
-    /**
-     * Updates the description of a topic given its ID.
-     *
-     * @param topicId        the ID of the topic to update
-     * @param newDescription the new description for the topic
-     * @return a response entity indicating the success of the update operation
-     */
-    @Operation(summary = "Update the description of a topic given its ID")
-    @PutMapping("/description/{topicId}")
-    public ResponseEntity<String> updateDescription(@PathVariable Long topicId, @RequestBody String newDescription) {
-        String result = topicService.updateTopicDescriptionWithValidation(topicId, newDescription);
-        return ResponseEntity.ok().body(result);
-    }
+    // /**
+    // * Updates the description of a topic given its ID.
+    // *
+    // * @param topicId the ID of the topic to update
+    // * @param newDescription the new description for the topic
+    // * @return a response entity indicating the success of the update operation
+    // */
+    // @Operation(summary = "Update the description of a topic given its ID")
+    // @PutMapping("/description/{topicId}")
+    // public ResponseEntity<String> updateDescription(@PathVariable Long topicId,
+    // @RequestBody String newDescription) {
+    // String result = topicService.updateTopicDescriptionWithValidation(topicId,
+    // newDescription);
+    // return ResponseEntity.ok().body(result);
+    // }
 
     /**
      * Deletes a topic by its ID.
