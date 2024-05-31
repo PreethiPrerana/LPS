@@ -137,22 +137,6 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    // /**
-    // * Converts a course entity to a DTO (Data Transfer Object).
-    // *
-    // * @param course The course entity to convert.
-    // * @return The course DTO.
-    // */
-    // public CourseDTO convertToDTO(Course course) {
-    // // Converts course entity to DTO format with associated topics
-    // List<TopicDTO> topicDTOs = topicService.getTopicsByCourse(course)
-    // .stream()
-    // .map(topic -> new TopicDTO(topic.getTopicId(), topic.getTopicName()))
-    // .collect(Collectors.toList());
-
-    // return new CourseDTO(course.getCourseId(), course.getCourseName(),
-    // topicDTOs);
-    // }
     /**
      * Converts a course entity to a DTO (Data Transfer Object).
      *
