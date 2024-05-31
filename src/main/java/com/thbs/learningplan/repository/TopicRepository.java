@@ -33,18 +33,6 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     Object existsByTopicName(String anyString);
 
     /**
-     * Checks if a topic with the specified name and description exists for a given
-     * course.
-     *
-     * @param course      The course associated with the topic.
-     * @param topicName   The name of the topic.
-     * @param description The description of the topic.
-     * @return {@code true} if a topic with the specified name and description
-     *         exists for the given course, {@code false} otherwise.
-     */
-    boolean existsByCourseAndTopicNameAndDescription(Course course, String topicName, String description);
-
-    /**
      * Retrieves a list of topics associated with a given course.
      *
      * @param course The course for which to retrieve topics.
