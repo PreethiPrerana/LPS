@@ -37,42 +37,30 @@ class TopicServiceTest {
     void setUp() {
         topic = new Topic();
         topic.setTopicName("Test Topic");
-        topic.setDescription("Test Description");
+        topic.setTopicDuration(1L);
     }
 
-@Test
-void testAddTopicWithValidation_Success() {
-    // Stub the method call with specific arguments
-    when(topicRepository.existsByTopicNameAndCourse(eq(topic.getTopicName()), eq(topic.getCourse()))).thenReturn(false);
-
-    // Stub the save method to return the topic
-    when(topicRepository.save(any(Topic.class))).thenReturn(topic);
-
-    // Call the method under test
-    Topic addedTopic = topicService.addTopicWithValidation(topic);
-
-    // Assertions
-    assertNotNull(addedTopic);
-    assertEquals(topic, addedTopic);
-}
-
     @Test
-    void testAddTopicWithValidation_InvalidDataException() {
-        Topic topic1 = new Topic(1L, "", "Description", new Course());
-        Topic topic2 = new Topic(1L, null, "Description", new Course());
-        Topic topic3 = new Topic(1L, "New Topic", "", new Course());
-        Topic topic4 = new Topic(1L, "New Topic", null, new Course());
+    void testAddTopicWithValidation_Success() {
+        // Stub the method call with specific arguments
+        when(topicRepository.existsByTopicNameAndCourse(eq(topic.getTopicName()), eq(topic.getCourse())))
+                .thenReturn(false);
 
-        assertThrows(InvalidDataException.class, () -> topicService.addTopicWithValidation(topic1));
-        assertThrows(InvalidDataException.class, () -> topicService.addTopicWithValidation(topic2));
-        assertThrows(InvalidDataException.class, () -> topicService.addTopicWithValidation(topic3));
-        assertThrows(InvalidDataException.class, () -> topicService.addTopicWithValidation(topic4));
+        // Stub the save method to return the topic
+        when(topicRepository.save(any(Topic.class))).thenReturn(topic);
+
+        // Call the method under test
+        Topic addedTopic = topicService.addTopicWithValidation(topic);
+
+        // Assertions
+        assertNotNull(addedTopic);
+        assertEquals(topic, addedTopic);
     }
 
     @Test
     void testAddTopicWithValidation_DuplicateEntryException() {
         when(topicRepository.existsByTopicNameAndCourse(anyString(), any(Course.class))).thenReturn(true);
-        Topic topic = new Topic(1L, "Existing Topic", "Description", new Course());
+        Topic topic = new Topic(1L, "Existing Topic", 1L, new Course());
 
         assertThrows(DuplicateEntryException.class, () -> topicService.addTopicWithValidation(topic));
     }
@@ -83,13 +71,13 @@ void testAddTopicWithValidation_Success() {
 
         Topic validTopic1 = new Topic();
         validTopic1.setTopicName("Topic 1");
-        validTopic1.setDescription("Description 1");
+        validTopic1.setTopicDuration(1L);
         Course course = new Course();
         validTopic1.setCourse(course);
 
         Topic validTopic2 = new Topic();
         validTopic2.setTopicName("Topic 2");
-        validTopic2.setDescription("Description 2");
+        validTopic2.setTopicDuration(1L);
         validTopic2.setCourse(course);
         topics.add(validTopic1);
         topics.add(validTopic2);
@@ -109,13 +97,13 @@ void testAddTopicWithValidation_Success() {
 
         Topic validTopic1 = new Topic();
         validTopic1.setTopicName("Topic 1");
-        validTopic1.setDescription("Description 1");
+        validTopic1.setTopicDuration(1L);
         Course course = new Course();
         validTopic1.setCourse(course);
 
         Topic duplicateTopic = new Topic();
         duplicateTopic.setTopicName("Topic 1");
-        duplicateTopic.setDescription("Description 1");
+        duplicateTopic.setTopicDuration(1L);
         duplicateTopic.setCourse(course);
 
         topics.add(validTopic1);
@@ -132,27 +120,36 @@ void testAddTopicWithValidation_Success() {
     void testAddTopicsWithValidation_InvalidDataException() {
         List<Topic> topics = new ArrayList<>();
 
-        Topic validTopic = new Topic();
-        validTopic.setTopicName("");
-        validTopic.setDescription("Description 1");
-        Course course = new Course();
-        validTopic.setCourse(course);
+        // Invalid topic with empty name
+        Topic topic1 = new Topic();
+        topic1.setTopicName("");
+        topic1.setTopicDuration(1L);
+        Course course1 = new Course();
+        topic1.setCourse(course1);
+        topics.add(topic1);
 
-        topics.add(validTopic);
+        // Invalid topic with null name
+        Topic topic2 = new Topic();
+        topic2.setTopicName(null);
+        topic2.setTopicDuration(1L);
+        Course course2 = new Course();
+        topic2.setCourse(course2);
+        topics.add(topic2);
 
-        validTopic.setTopicName(null);
+        // Valid topics
+        Topic topic3 = new Topic();
+        topic3.setTopicName("Topic 1");
+        topic3.setTopicDuration(1L);
+        Course course3 = new Course();
+        topic3.setCourse(course3);
+        topics.add(topic3);
 
-        topics.add(validTopic);
-
-        validTopic.setTopicName("Topic 1");
-        validTopic.setDescription("");
-
-        topics.add(validTopic);
-
-        validTopic.setTopicName("Topic 2");
-        validTopic.setDescription(null);
-
-        topics.add(validTopic);
+        Topic topic4 = new Topic();
+        topic4.setTopicName("Topic 2");
+        topic4.setTopicDuration(1L);
+        Course course4 = new Course();
+        topic4.setCourse(course4);
+        topics.add(topic4);
 
         assertThrows(InvalidDataException.class,
                 () -> topicService.addTopicsWithValidation(topics));
@@ -229,36 +226,6 @@ void testAddTopicWithValidation_Success() {
         List<Topic> result = topicService.getTopicsByCourse(course);
 
         assertEquals(2, result.size());
-    }
-
-    @Test
-    void testUpdateTopicDescriptionWithValidation_Success() {
-        when(topicRepository.findById(anyLong())).thenReturn(Optional.of(topic));
-
-        when(topicRepository.save(any(Topic.class))).thenReturn(topic);
-
-        String updatedTopic = topicService.updateTopicDescriptionWithValidation(1L, "New Description");
-
-        assertEquals("Description updated successfully", updatedTopic);
-    }
-
-    @Test
-    void testUpdateTopicDescriptionWithValidation_InvalidDataException() {
-        when(topicRepository.findById(anyLong())).thenReturn(Optional.of(topic));
-
-        assertThrows(InvalidDataException.class,
-                () -> topicService.updateTopicDescriptionWithValidation(1L, ""));
-
-        assertThrows(InvalidDataException.class,
-                () -> topicService.updateTopicDescriptionWithValidation(1L, null));
-    }
-
-    @Test
-    void testUpdateTopicDescriptionWithValidation_NotFoundException() {
-        when(topicRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThrows(NotFoundException.class,
-                () -> topicService.updateTopicDescriptionWithValidation(1L, "New Description"));
     }
 
     @Test

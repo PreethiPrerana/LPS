@@ -51,6 +51,7 @@ class CourseServiceTest {
         Course course = new Course();
         course.setCourseName("Java Programming");
         course.setLevel("Test type");
+        course.setCourseDuration(1L);
 
         when(courseRepository.findByCourseNameIgnoreCase("Java Programming")).thenReturn(Optional.of(course));
 
@@ -62,6 +63,7 @@ class CourseServiceTest {
         Course course = new Course();
         course.setCourseName("Python Programming");
         course.setLevel("Test type");
+        course.setCourseDuration(1L);
         when(courseRepository.findByCourseNameIgnoreCase("Python Programming")).thenReturn(Optional.empty());
         when(courseRepository.save(course)).thenReturn(course);
         assertEquals(course, courseService.saveCourse(course));
@@ -78,6 +80,7 @@ class CourseServiceTest {
         Course course = new Course();
         course.setCourseName("empty".equals(courseName) ? "" : courseName);
         course.setLevel("empty".equals(level) ? "" : level);
+        course.setCourseDuration(1L);
         assertThrows(InvalidDataException.class, () -> courseService.saveCourse(course));
     }
 
@@ -96,6 +99,8 @@ class CourseServiceTest {
         Course existingCourse = new Course();
         existingCourse.setCourseName("Java Programming");
         existingCourse.setLevel("Intermediate");
+        existingCourse.setCourseDuration(1L);
+
         courses.add(existingCourse);
 
         when(courseRepository.findByCourseNameIgnoreCase("Java Programming")).thenReturn(Optional.of(existingCourse));
@@ -106,9 +111,11 @@ class CourseServiceTest {
     @Test
     void testSaveCourses_SuccessfulSaving() {
         List<Course> courses = new ArrayList<>();
+
         Course newCourse = new Course();
         newCourse.setCourseName("Python Programming");
         newCourse.setLevel("Intermediate");
+        newCourse.setCourseDuration(1L);
         courses.add(newCourse);
 
         when(courseRepository.findByCourseNameIgnoreCase("Python Programming")).thenReturn(Optional.empty());
@@ -132,10 +139,12 @@ class CourseServiceTest {
         Course course1 = new Course();
         course1.setCourseName("empty".equals(courseName) ? "" : courseName);
         course1.setLevel("empty".equals(level) ? "" : level);
+        course1.setCourseDuration(1L);
 
         Course course2 = new Course();
         course2.setCourseName("Java Programming");
         course2.setLevel("Intermediate");
+        course2.setCourseDuration(1L);
 
         courses.add(course1);
         courses.add(course2);
@@ -150,11 +159,15 @@ class CourseServiceTest {
         course.setCourseId(1L);
         course.setCourseName("Java");
         course.setLevel("Intermediate");
+        course.setCourseDuration(1L);
+
 
         Course course2 = new Course();
         course2.setCourseId(2L);
         course2.setCourseName("Python");
         course2.setLevel("Beginner");
+        course2.setCourseDuration(1L);
+
 
         courses.add(course);
         courses.add(course2);
@@ -180,11 +193,13 @@ class CourseServiceTest {
         course.setCourseId(1L);
         course.setCourseName("Java");
         course.setLevel("Intermediate");
+        course.setCourseDuration(1L);
 
         Course course2 = new Course();
         course2.setCourseId(2L);
         course2.setCourseName("Python");
         course2.setLevel("Intermediate");
+        course2.setCourseDuration(1L);
 
         courses.add(course);
         courses.add(course2);
@@ -200,6 +215,8 @@ class CourseServiceTest {
         course.setCourseId(courseId);
         course.setCourseName("Java");
         course.setLevel("Intermediate");
+        course.setCourseDuration(1L);
+
 
         when(courseRepository.findById(courseId)).thenReturn(Optional.of(course));
 
@@ -221,6 +238,8 @@ class CourseServiceTest {
         course.setCourseId(courseId);
         course.setCourseName("Java");
         course.setLevel("Intermediate");
+        course.setCourseDuration(1L);
+
 
         when(courseRepository.save(any(Course.class))).thenReturn(course);
 
@@ -238,11 +257,15 @@ class CourseServiceTest {
         course1.setCourseId(1L);
         course1.setCourseName("Java");
         course1.setLevel("Intermediate");
+        course1.setCourseDuration(1L);
+
 
         Course course2 = new Course();
         course2.setCourseId(2L);
         course2.setCourseName("Python");
         course2.setLevel("Beginner");
+        course2.setCourseDuration(1L);
+
 
         List<Course> courses = Arrays.asList(course1, course2);
 
@@ -296,8 +319,8 @@ class CourseServiceTest {
     @Test
     void testDeleteCourses_Success() {
         List<Course> coursesToDelete = new ArrayList<>();
-        coursesToDelete.add(new Course(1L, "Course1", "Beginner"));
-        coursesToDelete.add(new Course(2L, "Course2", "Intermediate"));
+        coursesToDelete.add(new Course(1L, "Course1", "Beginner",1L));
+        coursesToDelete.add(new Course(2L, "Course2", "Intermediate",1L));
 
         when(courseRepository.findById(1L)).thenReturn(Optional.of(new Course()));
         when(courseRepository.findById(2L)).thenReturn(Optional.of(new Course()));
@@ -311,8 +334,8 @@ class CourseServiceTest {
     @Test
     void testDeleteCourses_MixOfExistingAndNonExisting() {
         List<Course> coursesToDelete = new ArrayList<>();
-        coursesToDelete.add(new Course(1L, "Course1", "Beginner"));
-        coursesToDelete.add(new Course(2L, "Course2", "Intermediate"));
+        coursesToDelete.add(new Course(1L, "Course1", "Beginner",1L));
+        coursesToDelete.add(new Course(2L, "Course2", "Intermediate",1L));
 
         when(courseRepository.findById(1L)).thenReturn(Optional.of(new Course()));
         when(courseRepository.findById(2L)).thenReturn(Optional.empty());
@@ -335,7 +358,7 @@ class CourseServiceTest {
     @Test
     void testDeleteCourses_WhenIdNotFound() {
         List<Course> coursesToDelete = new ArrayList<>();
-        coursesToDelete.add(new Course(1L, "Course1", "Beginner"));
+        coursesToDelete.add(new Course(1L, "Course1", "Beginner",1L));
 
         when(courseRepository.findById(1L)).thenReturn(Optional.empty());
 

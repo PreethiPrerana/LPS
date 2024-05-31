@@ -33,6 +33,7 @@ class CourseControllerTest {
         Course course = new Course();
         course.setCourseName("Test Course");
         course.setLevel("Intermediate");
+        course.setCourseDuration(3L);
 
         when(courseService.saveCourse(course)).thenReturn(course);
 
@@ -48,9 +49,13 @@ class CourseControllerTest {
         Course course1 = new Course();
         course1.setCourseName("Test Course 1");
         course1.setLevel("Intermediate");
+        course1.setCourseDuration(3L);
+
         Course course2 = new Course();
         course2.setCourseName("Test Course 2");
         course2.setLevel("Advanced");
+        course2.setCourseDuration(6L);
+
         courses.add(course1);
         courses.add(course2);
 
@@ -69,9 +74,13 @@ class CourseControllerTest {
         Course course1 = new Course();
         course1.setCourseName("Test Course 1");
         course1.setLevel(level);
+        course1.setCourseDuration(3L);
+
         Course course2 = new Course();
         course2.setCourseName("Test Course 2");
         course2.setLevel(level);
+        course2.setCourseDuration(3L);
+
         courses.add(course1);
         courses.add(course2);
 
@@ -83,18 +92,6 @@ class CourseControllerTest {
         assertEquals(courses, responseEntity.getBody());
     }
 
-    // @Test
-    // void testUploadFile() throws IOException {
-    // MultipartFile file = null;
-
-    // doNothing().when(bulkUploadService).uploadFile(file);
-
-    // ResponseEntity<?> responseEntity = learningPlanController.uploadFile(file);
-
-    // assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    // assertEquals("File uploaded successfully.", responseEntity.getBody());
-    // }
-
     @Test
     void testGetCourseById() {
         Long id = 1L;
@@ -102,6 +99,7 @@ class CourseControllerTest {
         course.setCourseId(id);
         course.setCourseName("Test Course");
         course.setLevel("Intermediate");
+        course.setCourseDuration(3L);
 
         when(courseService.getCourseById(id)).thenReturn(course);
 

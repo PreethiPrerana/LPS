@@ -138,7 +138,6 @@ public class BulkUploadService {
 
                 Topic topic = new Topic();
                 topic.setTopicName(topicName);
-                topic.setDescription(description);
                 topic.setCourse(course);
                 topics.add(topic);
             } catch (DuplicateEntryException e) {

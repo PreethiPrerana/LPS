@@ -16,18 +16,18 @@ class TopicTest {
         // Set values using setters
         Long topicID = 1L;
         String topicName = "Test Topic";
-        String description = "Test Description";
+        Long topicDuration = 1L;
         Course course = new Course();
 
         topic.setTopicId(topicID);
         topic.setTopicName(topicName);
-        topic.setDescription(description);
+        topic.setTopicDuration(topicDuration);
         topic.setCourse(course);
 
         // Test getters
         assertEquals(topicID, topic.getTopicId());
         assertEquals(topicName, topic.getTopicName());
-        assertEquals(description, topic.getDescription());
+        assertEquals(topicDuration, topic.getTopicDuration());
         assertEquals(course, topic.getCourse());
     }
 
@@ -36,15 +36,15 @@ class TopicTest {
         // Initialize a Topic object using all-args constructor
         Long topicID = 1L;
         String topicName = "Test Topic";
-        String description = "Test Description";
+        Long topicDuration = 1L;
         Course course = new Course();
 
-        Topic topic = new Topic(topicID, topicName, description, course);
+        Topic topic = new Topic(topicID, topicName, topicDuration, course);
 
         // Test getters
         assertEquals(topicID, topic.getTopicId());
         assertEquals(topicName, topic.getTopicName());
-        assertEquals(description, topic.getDescription());
+        assertEquals(topicDuration, topic.getTopicDuration());
         assertEquals(course, topic.getCourse());
     }
 
@@ -56,7 +56,7 @@ class TopicTest {
         // Test getters
         assertNull(topic.getTopicId());
         assertNull(topic.getTopicName());
-        assertNull(topic.getDescription());
+        assertNull(topic.getTopicDuration());
         assertNull(topic.getCourse());
     }
 }

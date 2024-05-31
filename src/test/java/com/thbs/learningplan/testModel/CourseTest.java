@@ -16,10 +16,12 @@ class CourseTest {
         Long courseID = 1L;
         String courseName = "Test Course";
         String level = "Intermediate";
+        Long courseDuration = 1L;
 
         course.setCourseId(courseID);
         course.setCourseName(courseName);
         course.setLevel(level);
+        course.setCourseDuration(courseDuration);
 
         // Test getters
         assertEquals(courseID, course.getCourseId());
@@ -33,13 +35,16 @@ class CourseTest {
         Long courseID = 1L;
         String courseName = "Test Course";
         String level = "Intermediate";
+        Long courseDuration = 1L;
 
-        Course course = new Course(courseID, courseName, level);
+        Course course = new Course(courseID, courseName, level, courseDuration);
 
         // Test getters
         assertEquals(courseID, course.getCourseId());
         assertEquals(courseName, course.getCourseName());
         assertEquals(level, course.getLevel());
+        assertEquals(courseDuration, course.getCourseDuration());
+
     }
 
     @Test
@@ -51,5 +56,6 @@ class CourseTest {
         assertNull(course.getCourseId());
         assertNull(course.getCourseName());
         assertNull(course.getLevel());
+        assertNull(course.getCourseDuration());
     }
 }
