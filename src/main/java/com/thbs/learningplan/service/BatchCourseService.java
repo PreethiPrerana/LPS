@@ -7,6 +7,7 @@ import com.thbs.learningplan.dto.BatchCourseDTO;
 import com.thbs.learningplan.dto.CourseByBatchDTO;
 import com.thbs.learningplan.dto.CourseDTO;
 import com.thbs.learningplan.dto.PlanDTO;
+import com.thbs.learningplan.dto.SubTopicDTO;
 import com.thbs.learningplan.dto.TopicDTO;
 import com.thbs.learningplan.dto.TrainerBatchCourseDTO;
 import com.thbs.learningplan.exception.InvalidDataException;
@@ -32,14 +33,17 @@ public class BatchCourseService {
     private LearningPlanRepository learningPlanRepository;
     private CourseService courseService;
     private TopicService topicService;
+    private SubTopicService subTopicService;
 
     @Autowired
     public BatchCourseService(BatchCourseRepository batchCourseRepository,
-            LearningPlanRepository learningPlanRepository, CourseService courseService, TopicService topicService) {
+            LearningPlanRepository learningPlanRepository, CourseService courseService, TopicService topicService,
+            SubTopicService subTopicService) {
         this.batchCourseRepository = batchCourseRepository;
         this.learningPlanRepository = learningPlanRepository;
         this.courseService = courseService;
         this.topicService = topicService;
+        this.subTopicService = subTopicService;
     }
 
     /**
@@ -177,7 +181,13 @@ public class BatchCourseService {
 
             List<TopicDTO> topicDTOs = topicService.getTopicsByCourse(course)
                     .stream()
-                    .map(topic -> new TopicDTO(topic.getTopicId(), topic.getTopicName()))
+                    .map(topic -> {
+                        List<SubTopicDTO> subTopicDTOs = subTopicService.getSubTopicsByTopic(topic)
+                                .stream()
+                                .map(subTopic -> new SubTopicDTO(subTopic.getSubTopicId(), subTopic.getSubTopicName()))
+                                .collect(Collectors.toList());
+                        return new TopicDTO(topic.getTopicId(), topic.getTopicName(), subTopicDTOs);
+                    })
                     .collect(Collectors.toList());
             batchCourseDTO.setTopic(topicDTOs);
 

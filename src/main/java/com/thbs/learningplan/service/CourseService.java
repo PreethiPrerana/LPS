@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.repository.CourseRepository;
 import com.thbs.learningplan.dto.CourseDTO;
+import com.thbs.learningplan.dto.SubTopicDTO;
 import com.thbs.learningplan.dto.TopicDTO;
 import com.thbs.learningplan.exception.*;
 
@@ -24,6 +25,7 @@ public class CourseService {
     private static final String NOT_FOUND_MSG = "Course not found.";
     private CourseRepository courseRepository;
     private TopicService topicService;
+    private SubTopicService subTopicService;
 
     /**
      * Constructs a new instance of {@code CourseService} with the specified
@@ -33,9 +35,11 @@ public class CourseService {
      * @param topicService     The service for managing topics.
      */
     @Autowired
-    public CourseService(CourseRepository courseRepository, TopicService topicService) {
+    public CourseService(CourseRepository courseRepository, TopicService topicService,
+            SubTopicService subTopicService) {
         this.courseRepository = courseRepository;
         this.topicService = topicService;
+        this.subTopicService = subTopicService;
     }
 
     /**
@@ -133,6 +137,22 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
+    // /**
+    // * Converts a course entity to a DTO (Data Transfer Object).
+    // *
+    // * @param course The course entity to convert.
+    // * @return The course DTO.
+    // */
+    // public CourseDTO convertToDTO(Course course) {
+    // // Converts course entity to DTO format with associated topics
+    // List<TopicDTO> topicDTOs = topicService.getTopicsByCourse(course)
+    // .stream()
+    // .map(topic -> new TopicDTO(topic.getTopicId(), topic.getTopicName()))
+    // .collect(Collectors.toList());
+
+    // return new CourseDTO(course.getCourseId(), course.getCourseName(),
+    // topicDTOs);
+    // }
     /**
      * Converts a course entity to a DTO (Data Transfer Object).
      *
@@ -140,10 +160,16 @@ public class CourseService {
      * @return The course DTO.
      */
     public CourseDTO convertToDTO(Course course) {
-        // Converts course entity to DTO format with associated topics
+        // Converts course entity to DTO format with associated topics and subtopics
         List<TopicDTO> topicDTOs = topicService.getTopicsByCourse(course)
                 .stream()
-                .map(topic -> new TopicDTO(topic.getTopicId(), topic.getTopicName()))
+                .map(topic -> {
+                    List<SubTopicDTO> subTopicDTOs = subTopicService.getSubTopicsByTopic(topic)
+                            .stream()
+                            .map(subTopic -> new SubTopicDTO(subTopic.getSubTopicId(), subTopic.getSubTopicName()))
+                            .collect(Collectors.toList());
+                    return new TopicDTO(topic.getTopicId(), topic.getTopicName(), subTopicDTOs);
+                })
                 .collect(Collectors.toList());
 
         return new CourseDTO(course.getCourseId(), course.getCourseName(), topicDTOs);

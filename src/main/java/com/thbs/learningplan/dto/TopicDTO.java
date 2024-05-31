@@ -1,5 +1,7 @@
 package com.thbs.learningplan.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +26,6 @@ public class TopicDTO {
      * The name of the topic.
      */
     private String topicName;
+
+    private List<SubTopicDTO> subTopics;
 }
