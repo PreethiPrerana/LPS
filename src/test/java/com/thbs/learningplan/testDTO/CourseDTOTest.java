@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import com.thbs.learningplan.dto.CourseDTO;
+import com.thbs.learningplan.dto.SubTopicDTO;
 import com.thbs.learningplan.dto.TopicDTO;
 
 class CourseDTOTest {
@@ -27,9 +28,14 @@ class CourseDTOTest {
 
     @Test
     void testAllArgsConstructor() {
+        List<SubTopicDTO> subTopics1 = new ArrayList<>();
+        subTopics1.add(new SubTopicDTO()); // Assuming SubTopicDTO has a no-args constructor
+        List<SubTopicDTO> subTopics2 = new ArrayList<>();
+        subTopics2.add(new SubTopicDTO()); // Assuming SubTopicDTO has a no-args constructor
+
         List<TopicDTO> topics = new ArrayList<>();
-        TopicDTO topic1 = new TopicDTO(1L, "Topic 1");
-        TopicDTO topic2 = new TopicDTO(2L, "Topic 2");
+        TopicDTO topic1 = new TopicDTO(1L, "Topic 1", subTopics1);
+        TopicDTO topic2 = new TopicDTO(2L, "Topic 2", subTopics2);
         topics.add(topic1);
         topics.add(topic2);
 

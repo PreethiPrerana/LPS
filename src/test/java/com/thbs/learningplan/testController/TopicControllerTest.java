@@ -38,7 +38,7 @@ class TopicControllerTest {
         Topic topic = new Topic();
 
         topic.setTopicName("Test Topic");
-        topic.setDescription("Test Description");
+        topic.setTopicDuration((long) 3);
 
         when(topicService.addTopicWithValidation(topic))
                 .thenReturn(topic);
@@ -55,11 +55,11 @@ class TopicControllerTest {
 
         Topic topic1 = new Topic();
         topic1.setTopicName("Test Topic 1");
-        topic1.setDescription("Test Description 1");
+        topic1.setTopicDuration(3L);
 
         Topic topic2 = new Topic();
         topic2.setTopicName("Test Topic 2");
-        topic2.setDescription("Test Description 2");
+        topic1.setTopicDuration(6L);
 
         topics.add(topic1);
         topics.add(topic2);
@@ -78,11 +78,11 @@ class TopicControllerTest {
 
         Topic topic1 = new Topic();
         topic1.setTopicName("Test Topic 1");
-        topic1.setDescription("Test Description 1");
+        topic1.setTopicDuration(3L);
 
         Topic topic2 = new Topic();
         topic2.setTopicName("Test Topic 2");
-        topic2.setDescription("Test Description 2");
+        topic1.setTopicDuration(6L);
 
         topics.add(topic1);
         topics.add(topic2);
@@ -118,11 +118,11 @@ class TopicControllerTest {
 
         Topic topic1 = new Topic();
         topic1.setTopicName("Test Topic 1");
-        topic1.setDescription("Test Description 1");
+        topic1.setTopicDuration(3L);
 
         Topic topic2 = new Topic();
         topic2.setTopicName("Test Topic 2");
-        topic2.setDescription("Test Description 2");
+        topic2.setTopicDuration(6L);
 
         topics.add(topic1);
         topics.add(topic2);
@@ -135,20 +135,6 @@ class TopicControllerTest {
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(topics, responseEntity.getBody());
-    }
-
-    @Test
-    void testUpdateDescription() {
-        Long topicId = 1L;
-        String newDescription = "Updated Description";
-
-        when(topicService.updateTopicDescriptionWithValidation(topicId, newDescription))
-                .thenReturn("Description updated successfully");
-
-        ResponseEntity<?> responseEntity = topicController.updateDescription(topicId, newDescription);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals("Description updated successfully", responseEntity.getBody());
     }
 
     @Test

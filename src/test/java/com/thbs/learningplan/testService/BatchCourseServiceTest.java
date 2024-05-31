@@ -173,7 +173,7 @@ class BatchCourseServiceTest {
         LearningPlan learningPlan = new LearningPlan(1L, "Sample Plan", "Type", null);
         learningPlan.setCourses(Arrays.asList(createSampleCourse())); // Assuming the
 
-        Course course = new Course(1L, "Sample Course", null);
+        Course course = new Course(1L, "Sample Course", null,1L);
 
         BatchCourseId batchCourseId1 = new BatchCourseId(1L, learningPlan, course);
         batchCourseId1.setCourse(course); // Set the Course object in BatchCourseId
@@ -241,9 +241,10 @@ class BatchCourseServiceTest {
         Long courseId = 1L;
         String courseName = "Sample Course";
         String trainerName = "Sample Trainer";
+        Long courseDuration=1L;
 
         LearningPlan learningPlan = new LearningPlan(1L, "Sample Plan", "Type", null);
-        Course course = new Course(courseId, courseName, null);
+        Course course = new Course(courseId, courseName, null,courseDuration);
 
         BatchCourseId batchCourseId = new BatchCourseId(batchId, learningPlan, course);
 
@@ -328,7 +329,7 @@ class BatchCourseServiceTest {
     void testUpdateDates_Success() {
         // Prepare data
         LearningPlan learningPlan = new LearningPlan(2L, null, null, null);
-        Course course = new Course(3L, null, null);
+        Course course = new Course(3L, null, null,1L);
         BatchCourseId batchCourseId = new BatchCourseId(1L, learningPlan, course);
         Date startDate = new Date();
         Date endDate = new Date();
@@ -362,7 +363,7 @@ class BatchCourseServiceTest {
     void testUpdateDates_NotFound() {
         // Prepare data
         LearningPlan learningPlan = new LearningPlan(2L, null, null, null);
-        Course course = new Course(3L, null, null);
+        Course course = new Course(3L, null, null,1L);
         BatchCourseId batchCourseId = new BatchCourseId(1L, learningPlan, course);
         Date startDate = new Date();
         Date endDate = new Date();
