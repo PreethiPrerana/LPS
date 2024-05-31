@@ -40,7 +40,8 @@ public class TopicService {
      */
     public Topic addTopicWithValidation(Topic topic) {
         String topicName = topic.getTopicName();
-        String description = topic.getDescription();
+        // String description = topic.getDescription();
+        Long topicDuration = topic.getTopicDuration();
         Course course = topic.getCourse();
 
         // Checks for duplicate topic and validates data
@@ -49,13 +50,14 @@ public class TopicService {
             throw new DuplicateEntryException("Topic '" + topicName + "' already exists for this course.");
         }
 
-        if (topicName == null || topicName.isEmpty() || description == null || description.isEmpty()) {
-            throw new InvalidDataException("Topic name and description cannot be null or empty.");
+        if (topicName == null || topicName.isEmpty()) {
+            throw new InvalidDataException("Topic name cannot be null or empty.");
         }
 
         Topic newTopic = new Topic();
         newTopic.setTopicName(topicName);
-        newTopic.setDescription(description);
+        // newTopic.setDescription(description);
+        newTopic.setTopicDuration(topicDuration);
         newTopic.setCourse(course);
         return topicRepository.save(newTopic);
     }
@@ -109,29 +111,59 @@ public class TopicService {
         return topicRepository.findByCourse(course);
     }
 
+    // /**
+    // * Updates the description of a topic in the database with validation.
+    // *
+    // * @param topicId The ID of the topic to be updated.
+    // * @param newDescription The new description for the topic.
+    // * @return A message indicating the success of the operation.
+    // * @throws InvalidDataException If the new description is null or empty.
+    // * @throws NotFoundException If the topic with the specified ID is not
+    // * found.
+    // */
+    // public String updateTopicDescriptionWithValidation(Long topicId, String
+    // newDescription) {
+    // Optional<Topic> optionalTopic = topicRepository.findById(topicId);
+    // if (optionalTopic.isPresent()) {
+    // Topic topic = optionalTopic.get();
+    // // Updates topic description if exists and validates the new description
+    // if (newDescription == null || newDescription.isEmpty()) {
+    // // Throws exceptions if topic not found or description is invalid
+    // throw new InvalidDataException("Description cannot be null or empty.");
+    // }
+
+    // topic.setDescription(newDescription);
+    // topicRepository.save(topic);
+    // return "Description updated successfully";
+    // } else {
+    // throw new NotFoundException(NOT_FOUND_MSG);
+    // }
+    // }
+
     /**
-     * Updates the description of a topic in the database with validation.
+     * Updates the name of a topic in the database with validation.
      *
-     * @param topicId        The ID of the topic to be updated.
-     * @param newDescription The new description for the topic.
+     * @param topicId The ID of the topic to be updated.
+     * @param newName The new name for the topic.
      * @return A message indicating the success of the operation.
-     * @throws InvalidDataException If the new description is null or empty.
+     * @throws InvalidDataException If the new name is null or empty.
      * @throws NotFoundException    If the topic with the specified ID is not
      *                              found.
      */
-    public String updateTopicDescriptionWithValidation(Long topicId, String newDescription) {
+    public String updateTopicNameWithValidation(Long topicId, String newName) {
         Optional<Topic> optionalTopic = topicRepository.findById(topicId);
+        // Updates topic name if exists and validates the new name
         if (optionalTopic.isPresent()) {
             Topic topic = optionalTopic.get();
-            // Updates topic description if exists and validates the new description
-            if (newDescription == null || newDescription.isEmpty()) {
-                // Throws exceptions if topic not found or description is invalid
-                throw new InvalidDataException("Description cannot be null or empty.");
+
+            if (newName == null || newName.isEmpty()) {
+                // Throws exceptions if topic not found or name is invalid
+                throw new InvalidDataException("Topic Name cannot be null or empty.");
             }
 
-            topic.setDescription(newDescription);
+            topic.setTopicName(newName);
             topicRepository.save(topic);
-            return "Description updated successfully";
+            return "Topic name updated successfully";
         } else {
             throw new NotFoundException(NOT_FOUND_MSG);
         }
@@ -182,35 +214,6 @@ public class TopicService {
         List<Topic> topics = topicRepository.findByCourse(course);
         for (Topic topic : topics) {
             topicRepository.delete(topic);
-        }
-    }
-
-    /**
-     * Updates the name of a topic in the database with validation.
-     *
-     * @param topicId The ID of the topic to be updated.
-     * @param newName The new name for the topic.
-     * @return A message indicating the success of the operation.
-     * @throws InvalidDataException If the new name is null or empty.
-     * @throws NotFoundException    If the topic with the specified ID is not
-     *                              found.
-     */
-    public String updateTopicNameWithValidation(Long topicId, String newName) {
-        Optional<Topic> optionalTopic = topicRepository.findById(topicId);
-        // Updates topic name if exists and validates the new name
-        if (optionalTopic.isPresent()) {
-            Topic topic = optionalTopic.get();
-
-            if (newName == null || newName.isEmpty()) {
-                // Throws exceptions if topic not found or name is invalid
-                throw new InvalidDataException("Topic Name cannot be null or empty.");
-            }
-
-            topic.setTopicName(newName);
-            topicRepository.save(topic);
-            return "Topic name updated successfully";
-        } else {
-            throw new NotFoundException(NOT_FOUND_MSG);
         }
     }
 }
