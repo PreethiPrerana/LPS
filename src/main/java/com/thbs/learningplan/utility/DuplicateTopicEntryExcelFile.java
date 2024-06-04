@@ -6,14 +6,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-/**
- * The {@code EmptyRowExcelFileGenerator} class provides a utility method to
- * generate a mock Excel file
- * with an empty row for testing purposes.
- */
-public class EmptyRowExcelFileGenerator {
+public class DuplicateTopicEntryExcelFile {
     // Private constructor to prevent instantiation
-    private EmptyRowExcelFileGenerator() {
+    private DuplicateTopicEntryExcelFile() {
         throw new UnsupportedOperationException("Utility class");
     }
 
@@ -25,7 +20,7 @@ public class EmptyRowExcelFileGenerator {
      *         file.
      * @throws IOException If an I/O error occurs.
      */
-    public static MockMultipartFile generateNoTopicsExcelFile() throws IOException {
+    public static MockMultipartFile generateDuplicateTopicsExcelFile() throws IOException {
         // Create a new workbook
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {
 
@@ -50,9 +45,14 @@ public class EmptyRowExcelFileGenerator {
 
             // Create data rows
             Row dataRow1 = sheet.createRow(4);
-            dataRow1.createCell(0).setCellValue("");
-            dataRow1.createCell(1).setCellValue("");
-            dataRow1.createCell(2).setCellValue("");
+            dataRow1.createCell(0).setCellValue("Topic 1");
+            dataRow1.createCell(1).setCellValue("Subtopic 1a");
+            dataRow1.createCell(2).setCellValue(5);
+
+            Row dataRow2 = sheet.createRow(5);
+            dataRow2.createCell(0).setCellValue("Topic 1");
+            dataRow2.createCell(1).setCellValue("Subtopic 2a");
+            dataRow2.createCell(2).setCellValue(5);
 
             // Write workbook content to ByteArrayOutputStream
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -62,10 +62,9 @@ public class EmptyRowExcelFileGenerator {
             // Create MockMultipartFile
             return new MockMultipartFile(
                     "file",
-                    "empty_row_excel.xlsx",
+                    "mock_excel.xlsx",
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                     content);
         }
-
-    }
+    }   
 }

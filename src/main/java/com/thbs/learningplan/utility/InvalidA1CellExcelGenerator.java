@@ -29,27 +29,35 @@ public class InvalidA1CellExcelGenerator {
         // Create a new workbook
         try (Workbook workbook = new XSSFWorkbook()) {
 
-            // Create a new sheet
-            Sheet sheet = workbook.createSheet("Sheet1");
+        // Create a new sheet
+        Sheet sheet = workbook.createSheet("Course 1");
 
-            // Create header row
-            Row headerRow = sheet.createRow(0);
-            headerRow.createCell(0).setCellValue("Difficulty");
-            headerRow.createCell(1).setCellValue("BASIC");
+        // Create header row
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("DIFFICULTY");
+        headerRow.createCell(1).setCellValue("BASIC");
 
-            // Create top row
-            Row dataRow0 = sheet.createRow(2);
-            dataRow0.createCell(0).setCellValue("TOPIC");
-            dataRow0.createCell(1).setCellValue("DESCRIPTION");
+        // Course Duration row
+        Row durationRow = sheet.createRow(1);
+        durationRow.createCell(0).setCellValue("Course Duration (in days)");
+        durationRow.createCell(1).setCellValue(10);
 
-            // Create data rows
-            Row dataRow1 = sheet.createRow(3);
-            dataRow1.createCell(0).setCellValue("Data1");
-            dataRow1.createCell(1).setCellValue("Data1Desc");
+        // Create topic header row
+        Row topicsHeaderRow = sheet.createRow(3);
+        topicsHeaderRow.createCell(0).setCellValue("Topic");
+        topicsHeaderRow.createCell(1).setCellValue("Sub-Topic");
+        topicsHeaderRow.createCell(2).setCellValue("Topic Duration (in days)");
 
-            Row dataRow2 = sheet.createRow(4);
-            dataRow2.createCell(0).setCellValue("Data2");
-            dataRow2.createCell(1).setCellValue("Data2Desc");
+        // Create data rows
+        Row dataRow1 = sheet.createRow(4);
+        dataRow1.createCell(0).setCellValue("Topic 1");
+        dataRow1.createCell(1).setCellValue("Subtopic 1a");
+        dataRow1.createCell(2).setCellValue(5);
+
+        Row dataRow2 = sheet.createRow(5);
+        dataRow2.createCell(0).setCellValue("Topic 2");
+        dataRow2.createCell(1).setCellValue("Subtopic 2a");
+        dataRow2.createCell(2).setCellValue(5);
 
             // Write workbook content to ByteArrayOutputStream
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
