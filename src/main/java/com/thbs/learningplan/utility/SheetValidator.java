@@ -3,6 +3,7 @@ package com.thbs.learningplan.utility;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
@@ -45,7 +46,7 @@ public class SheetValidator {
         // Check if the second cell (B1) contains "BASIC", "INTERMEDIATE", or "ADVANCED"
         Cell levelCell = headerRow.getCell(1);
         if (levelCell == null) {
-            throw new InvalidSheetFormatException("Sheet must have two columns.");
+            throw new InvalidSheetFormatException("Sheet must have a level in cell B1.");
         }
 
         String level = levelCell.getStringCellValue().trim();
@@ -55,6 +56,31 @@ public class SheetValidator {
                     "Header cell B1 must contain 'BASIC', 'INTERMEDIATE', or 'ADVANCED'.");
         }
 
+        // Check if the second row (course duration row) has the correct format
+        Row courseDurationRow = sheet.getRow(1);
+        if (courseDurationRow == null) {
+            throw new InvalidSheetFormatException("Course duration row is missing.");
+        }
+        Cell durationLabelCell = courseDurationRow.getCell(0);
+        if (durationLabelCell == null || !durationLabelCell.getStringCellValue().trim().equalsIgnoreCase("Course Duration (in days)")) {
+            throw new InvalidSheetFormatException("Header cell A2 must contain 'Course Duration'.");
+        }
+        Cell durationValueCell = courseDurationRow.getCell(1);
+        if (durationValueCell == null || durationValueCell.getCellType() != CellType.NUMERIC) {
+            throw new InvalidSheetFormatException("Course duration must be a numeric value in cell B2.");
+        }
+
+        // Check if the third row (header row for topics) has the correct format
+        Row topicsHeaderRow = sheet.getRow(3);
+        if (topicsHeaderRow == null) {
+            throw new InvalidSheetFormatException("Topics header row is missing.");
+        }
+        if (!"Topic".equalsIgnoreCase(getCellValue(topicsHeaderRow.getCell(0)))
+                || !"Sub-Topic".equalsIgnoreCase(getCellValue(topicsHeaderRow.getCell(1)))
+                || !"Topic Duration (in days)".equalsIgnoreCase(getCellValue(topicsHeaderRow.getCell(2)))) {
+            throw new InvalidSheetFormatException("The third row must contain 'Topic', 'Subtopic', and 'Topic Duration' headers.");
+        }
+
         int lastRowNum = sheet.getLastRowNum();
         if (lastRowNum < 3) {
             throw new InvalidSheetFormatException("No topics found in the course.");
@@ -62,7 +88,8 @@ public class SheetValidator {
 
         // Get iterator for the rows in the sheet
         Iterator<Row> rowIterator = sheet.iterator();
-        // Skip the header row
+        // Skip the header rows
+        rowIterator.next();
         rowIterator.next();
         rowIterator.next();
         rowIterator.next();
@@ -71,12 +98,30 @@ public class SheetValidator {
         while (rowIterator.hasNext()) {
             Row row = rowIterator.next();
             Cell topicNameCell = row.getCell(0);
-            Cell topicDescriptionCell = row.getCell(1);
-            if (topicNameCell != null && topicDescriptionCell == null) {
-                throw new InvalidSheetFormatException("Topic does not have a description.");
+            Cell topicDurationCell = row.getCell(2);
+
+            if (topicNameCell != null && topicNameCell.getCellType() != CellType.BLANK) {
+                // If topic name is present, topic duration must also be present and numeric
+                if (topicDurationCell == null || topicDurationCell.getCellType() != CellType.NUMERIC) {
+                    throw new InvalidSheetFormatException("Topic duration must be a numeric value for topic: " + topicNameCell.getStringCellValue());
+                }
             }
         }
 
         return true;
+    }
+
+    private static String getCellValue(Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                return String.valueOf((long) cell.getNumericCellValue());
+            default:
+                return "";
+        }
     }
 }

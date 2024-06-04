@@ -7,12 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.thbs.learningplan.exception.DuplicateEntryException;
 import com.thbs.learningplan.exception.FileProcessingException;
+import com.thbs.learningplan.exception.InvalidSheetFormatException;
 import com.thbs.learningplan.model.Course;
 import com.thbs.learningplan.model.SubTopic;
 import com.thbs.learningplan.model.Topic;
 import com.thbs.learningplan.repository.CourseRepository;
 import com.thbs.learningplan.repository.SubTopicRepository;
 import com.thbs.learningplan.repository.TopicRepository;
+import com.thbs.learningplan.utility.SheetValidator;
 
 import jakarta.transaction.Transactional;
 
@@ -38,6 +40,9 @@ public class BulkUploadService {
         try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 Sheet sheet = workbook.getSheetAt(i);
+
+                // Validate the sheet format
+                SheetValidator.isValidSheetFormat(sheet);
 
                 // Extract course details from the sheet
                 String courseName = sheet.getSheetName();
@@ -103,28 +108,34 @@ public class BulkUploadService {
                     }
                     topicNames.add(currentTopicName);
 
-                    currentTopic = new Topic();
-                    currentTopic.setTopicName(currentTopicName);
-                    currentTopic.setTopicDuration(currentTopicDuration);
-                    currentTopic.setCourse(course);
-                    topics.add(currentTopic);
+                    if (topicRepository.existsByTopicName(currentTopicName)) {
+                        currentTopic = topicRepository.findByTopicNameAndCourse(currentTopicName, course).orElse(null);
+                        if (currentTopic != null) {
+                            currentTopic.setTopicDuration(currentTopicDuration);
+                        }
+                    } else {
+                        currentTopic = new Topic();
+                        currentTopic.setTopicName(currentTopicName);
+                        currentTopic.setTopicDuration(currentTopicDuration);
+                        currentTopic.setCourse(course);
+                        topics.add(currentTopic);
+                    }
                 }
 
                 if (currentTopic != null) {
-                    Cell subTopicCell = currentRow.getCell(1);
-                    if (subTopicCell != null && subTopicCell.getCellType() != CellType.BLANK) {
-                        String subTopicName = subTopicCell.getStringCellValue();
+                    String subTopicName = currentRow.getCell(1).getStringCellValue();
+                    if (!subTopicRepository.existsBySubTopicNameAndTopic(subTopicName, currentTopic)) {
                         SubTopic subTopic = new SubTopic();
                         subTopic.setSubTopicName(subTopicName);
                         subTopic.setTopic(currentTopic);
-                        subTopicRepository.save(subTopic);
+                        subTopicRepository.save(subTopic); // Save subtopic only if it doesn't exist
                     }
                 }
 
             } catch (DuplicateEntryException e) {
                 throw e;
             } catch (Exception e) {
-                // Handle extra cells or invalid data by logging the error and continuing
+               // Handle extra cells or invalid data by logging the error and continuing
                 System.err.println("Error processing row: " + e.getMessage());
             }
         }
@@ -145,4 +156,3 @@ public class BulkUploadService {
         return true;
     }
 }
-

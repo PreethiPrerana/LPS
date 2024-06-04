@@ -1,6 +1,7 @@
 package com.thbs.learningplan.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -30,7 +31,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
      * @param anyString Any string value (unused parameter).
      * @return {@code true} if any topic exists, {@code false} otherwise.
      */
-    Object existsByTopicName(String anyString);
+    boolean existsByTopicName(String topicName);
 
     /**
      * Retrieves a list of topics associated with a given course.
@@ -39,4 +40,6 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
      * @return A list of topics associated with the given course.
      */
     List<Topic> findByCourse(Course course);
+
+    Optional<Topic> findByTopicNameAndCourse(String topicName, Course course);
 }

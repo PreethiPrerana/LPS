@@ -12,4 +12,7 @@ import java.util.List;
 public interface SubTopicRepository extends JpaRepository<SubTopic, Long> {
 
     List<SubTopic> findByTopic(Topic topic);
+
+    boolean existsBySubTopicNameAndTopic(String subTopicName, Topic topic);
+
 }
