@@ -82,9 +82,12 @@ public class SheetValidator {
         }
 
         int lastRowNum = sheet.getLastRowNum();
-        if (lastRowNum < 3) {
-            throw new InvalidSheetFormatException("No topics found in the course.");
+        if (sheet.getRow(lastRowNum) == null || 
+            sheet.getRow(lastRowNum).getCell(0) == null || 
+            sheet.getRow(lastRowNum).getCell(0).getStringCellValue().isEmpty()) {
+                throw new InvalidSheetFormatException("No topics found in the course.");
         }
+
 
         // Get iterator for the rows in the sheet
         Iterator<Row> rowIterator = sheet.iterator();
