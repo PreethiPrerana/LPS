@@ -46,7 +46,7 @@ public class MockExcelFileGenerator {
             Row topicsHeaderRow = sheet.createRow(3);
             topicsHeaderRow.createCell(0).setCellValue("Topic");
             topicsHeaderRow.createCell(1).setCellValue("Sub-Topic");
-            topicsHeaderRow.createCell(2).setCellValue("Topic Duration (in days)");
+            topicsHeaderRow.createCell(2).setCellValue("Topic Duration (in hours)");
 
             // Create data rows
             Row dataRow1 = sheet.createRow(4);

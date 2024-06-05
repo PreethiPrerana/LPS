@@ -77,8 +77,8 @@ public class SheetValidator {
         }
         if (!"Topic".equalsIgnoreCase(getCellValue(topicsHeaderRow.getCell(0)))
                 || !"Sub-Topic".equalsIgnoreCase(getCellValue(topicsHeaderRow.getCell(1)))
-                || !"Topic Duration (in days)".equalsIgnoreCase(getCellValue(topicsHeaderRow.getCell(2)))) {
-            throw new InvalidSheetFormatException("The third row must contain 'Topic', 'Subtopic', and 'Topic Duration' headers.");
+                || !"Topic Duration (in hours)".equalsIgnoreCase(getCellValue(topicsHeaderRow.getCell(2)))) {
+            throw new InvalidSheetFormatException("The third row must contain 'Topic', 'Sub-Topic', and 'Topic Duration (in hours)' headers.");
         }
 
         int lastRowNum = sheet.getLastRowNum();
