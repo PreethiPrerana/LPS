@@ -46,7 +46,7 @@ public class Topic {
     // @Column(columnDefinition = "TEXT")
     // private String description;
 
-    private Long topicDuration;
+    private Double topicDuration;
 
     /**
      * The course associated with the topic.

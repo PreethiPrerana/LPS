@@ -41,7 +41,7 @@ public class TopicService {
     public Topic addTopicWithValidation(Topic topic) {
         String topicName = topic.getTopicName();
         // String description = topic.getDescription();
-        Long topicDuration = topic.getTopicDuration();
+        Double topicDuration = topic.getTopicDuration();
         Course course = topic.getCourse();
 
         // Checks for duplicate topic and validates data

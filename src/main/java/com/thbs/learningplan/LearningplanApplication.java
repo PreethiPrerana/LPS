@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan("com.thbs.learningplan")
 @EnableDiscoveryClient
+/* NEW MODIFIED LEARNING PLAN SERVICE CODE */
 public class LearningplanApplication {
 
 	public static void main(String[] args) {
