@@ -81,7 +81,7 @@ class SubTopicServiceTest {
 
     @Test
     void testGetSubTopicsByTopic_SuccessfulRetrieval() {
-        Topic topic = new Topic(1L, "Java Basics", 1L,null);
+        Topic topic = new Topic(1L, "Java Basics", 1.0,null);
         List<SubTopic> subTopics = Arrays.asList(
                 new SubTopic(1L, "Introduction to Java", topic),
                 new SubTopic(2L, "Advanced Java", topic));

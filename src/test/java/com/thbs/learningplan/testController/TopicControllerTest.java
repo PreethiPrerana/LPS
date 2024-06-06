@@ -38,7 +38,7 @@ class TopicControllerTest {
         Topic topic = new Topic();
 
         topic.setTopicName("Test Topic");
-        topic.setTopicDuration((long) 3);
+        topic.setTopicDuration(3.0);
 
         when(topicService.addTopicWithValidation(topic))
                 .thenReturn(topic);
@@ -55,11 +55,11 @@ class TopicControllerTest {
 
         Topic topic1 = new Topic();
         topic1.setTopicName("Test Topic 1");
-        topic1.setTopicDuration(3L);
+        topic1.setTopicDuration(3.0);
 
         Topic topic2 = new Topic();
         topic2.setTopicName("Test Topic 2");
-        topic1.setTopicDuration(6L);
+        topic1.setTopicDuration(6.0);
 
         topics.add(topic1);
         topics.add(topic2);
@@ -78,11 +78,11 @@ class TopicControllerTest {
 
         Topic topic1 = new Topic();
         topic1.setTopicName("Test Topic 1");
-        topic1.setTopicDuration(3L);
+        topic1.setTopicDuration(3.0);
 
         Topic topic2 = new Topic();
         topic2.setTopicName("Test Topic 2");
-        topic1.setTopicDuration(6L);
+        topic1.setTopicDuration(6.0);
 
         topics.add(topic1);
         topics.add(topic2);
@@ -118,11 +118,11 @@ class TopicControllerTest {
 
         Topic topic1 = new Topic();
         topic1.setTopicName("Test Topic 1");
-        topic1.setTopicDuration(3L);
+        topic1.setTopicDuration(3.0);
 
         Topic topic2 = new Topic();
         topic2.setTopicName("Test Topic 2");
-        topic2.setTopicDuration(6L);
+        topic2.setTopicDuration(6.0);
 
         topics.add(topic1);
         topics.add(topic2);

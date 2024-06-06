@@ -37,7 +37,7 @@ class TopicServiceTest {
     void setUp() {
         topic = new Topic();
         topic.setTopicName("Test Topic");
-        topic.setTopicDuration(1L);
+        topic.setTopicDuration(1.0);
     }
 
     @Test
@@ -60,7 +60,7 @@ class TopicServiceTest {
     @Test
     void testAddTopicWithValidation_DuplicateEntryException() {
         when(topicRepository.existsByTopicNameAndCourse(anyString(), any(Course.class))).thenReturn(true);
-        Topic topic = new Topic(1L, "Existing Topic", 1L, new Course());
+        Topic topic = new Topic(1L, "Existing Topic", 1.0, new Course());
 
         assertThrows(DuplicateEntryException.class, () -> topicService.addTopicWithValidation(topic));
     }
@@ -71,13 +71,13 @@ class TopicServiceTest {
 
         Topic validTopic1 = new Topic();
         validTopic1.setTopicName("Topic 1");
-        validTopic1.setTopicDuration(1L);
+        validTopic1.setTopicDuration(1.0);
         Course course = new Course();
         validTopic1.setCourse(course);
 
         Topic validTopic2 = new Topic();
         validTopic2.setTopicName("Topic 2");
-        validTopic2.setTopicDuration(1L);
+        validTopic2.setTopicDuration(1.0);
         validTopic2.setCourse(course);
         topics.add(validTopic1);
         topics.add(validTopic2);
@@ -97,13 +97,13 @@ class TopicServiceTest {
 
         Topic validTopic1 = new Topic();
         validTopic1.setTopicName("Topic 1");
-        validTopic1.setTopicDuration(1L);
+        validTopic1.setTopicDuration(1.0);
         Course course = new Course();
         validTopic1.setCourse(course);
 
         Topic duplicateTopic = new Topic();
         duplicateTopic.setTopicName("Topic 1");
-        duplicateTopic.setTopicDuration(1L);
+        duplicateTopic.setTopicDuration(1.0);
         duplicateTopic.setCourse(course);
 
         topics.add(validTopic1);
@@ -123,7 +123,7 @@ class TopicServiceTest {
         // Invalid topic with empty name
         Topic topic1 = new Topic();
         topic1.setTopicName("");
-        topic1.setTopicDuration(1L);
+        topic1.setTopicDuration(1.0);
         Course course1 = new Course();
         topic1.setCourse(course1);
         topics.add(topic1);
@@ -131,7 +131,7 @@ class TopicServiceTest {
         // Invalid topic with null name
         Topic topic2 = new Topic();
         topic2.setTopicName(null);
-        topic2.setTopicDuration(1L);
+        topic2.setTopicDuration(1.0);
         Course course2 = new Course();
         topic2.setCourse(course2);
         topics.add(topic2);
@@ -139,14 +139,14 @@ class TopicServiceTest {
         // Valid topics
         Topic topic3 = new Topic();
         topic3.setTopicName("Topic 1");
-        topic3.setTopicDuration(1L);
+        topic3.setTopicDuration(1.0);
         Course course3 = new Course();
         topic3.setCourse(course3);
         topics.add(topic3);
 
         Topic topic4 = new Topic();
         topic4.setTopicName("Topic 2");
-        topic4.setTopicDuration(1L);
+        topic4.setTopicDuration(1.0);
         Course course4 = new Course();
         topic4.setCourse(course4);
         topics.add(topic4);

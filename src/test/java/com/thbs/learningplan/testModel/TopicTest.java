@@ -16,7 +16,7 @@ class TopicTest {
         // Set values using setters
         Long topicID = 1L;
         String topicName = "Test Topic";
-        Long topicDuration = 1L;
+        Double topicDuration = 1.0;
         Course course = new Course();
 
         topic.setTopicId(topicID);
@@ -36,7 +36,7 @@ class TopicTest {
         // Initialize a Topic object using all-args constructor
         Long topicID = 1L;
         String topicName = "Test Topic";
-        Long topicDuration = 1L;
+        Double topicDuration = 1.0;
         Course course = new Course();
 
         Topic topic = new Topic(topicID, topicName, topicDuration, course);
