@@ -112,10 +112,27 @@ public class BatchCourseService {
         for (BatchCourse batchCourse : batchCourses) {
             Course course = batchCourse.getBatchCourseId().getCourse();
             CourseDTO courseDTO = fetchCourseDTO(course);
+            courseDTO.setTopics(null);
             courseDTOs.add(courseDTO);
         }
         batchCourseDTO.setCourses(courseDTOs);
         return batchCourseDTO;
+    }
+
+    /**
+     * Converts all batch courses to a list of DTOs.
+     * 
+     * @return A list of DTOs containing batch courses for all batches.
+     */
+    public List<CourseByBatchDTO> convertAllBatchesToDTO() {
+        // Fetch all distinct batch IDs
+        List<Long> batchIds = batchCourseRepository.findDistinctBatchIds();
+
+        // Convert each batch ID to CourseByBatchDTO using convertToDTO method and
+        // return it
+        return batchIds.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     /**

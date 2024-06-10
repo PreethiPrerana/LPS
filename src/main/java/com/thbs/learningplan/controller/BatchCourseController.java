@@ -107,6 +107,17 @@ public class BatchCourseController {
     }
 
     /**
+     * Endpoint for retrieving all batch course DTO.
+     *
+     * @return the list of batch course DTOs with HTTP status 200 OK
+     */
+    @GetMapping("/all-batch")
+    public ResponseEntity<List<CourseByBatchDTO>> getAllBatchCourseDTO() {
+        List<CourseByBatchDTO> dtos = batchCourseService.convertAllBatchesToDTO();
+        return ResponseEntity.ok().body(dtos);
+    }
+
+    /**
      * Endpoint for generating plan DTO by batch ID.
      *
      * @param batchId the ID of the batch

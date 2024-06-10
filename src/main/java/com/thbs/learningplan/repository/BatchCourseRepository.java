@@ -4,6 +4,7 @@ import com.thbs.learningplan.model.BatchCourse;
 import com.thbs.learningplan.model.BatchCourseId;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,4 +47,12 @@ public interface BatchCourseRepository extends JpaRepository<BatchCourse, BatchC
      * @return A list of batch courses associated with the specified trainer ID.
      */
     List<BatchCourse> findByTrainerId(Long trainerId);
+
+    /**
+     * Retrieves a list of distinct batch IDs from the database.
+     * 
+     * @return A list of Long representing distinct batch IDs.
+     */
+    @Query("SELECT DISTINCT b.batchCourseId.batchId FROM BatchCourse b")
+    List<Long> findDistinctBatchIds();
 }
