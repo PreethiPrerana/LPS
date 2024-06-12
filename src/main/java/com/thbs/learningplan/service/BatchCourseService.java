@@ -112,7 +112,6 @@ public class BatchCourseService {
         for (BatchCourse batchCourse : batchCourses) {
             Course course = batchCourse.getBatchCourseId().getCourse();
             CourseDTO courseDTO = fetchCourseDTO(course);
-            courseDTO.setTopics(null);
             courseDTOs.add(courseDTO);
         }
         batchCourseDTO.setCourses(courseDTOs);
